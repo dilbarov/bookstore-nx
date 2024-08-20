@@ -5,6 +5,7 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -13,7 +14,11 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@bookstore-nx/entities": ["packages/entities/src/index.ts"],
+      "@bookstore-nx/microservices": ["packages/microservices/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
