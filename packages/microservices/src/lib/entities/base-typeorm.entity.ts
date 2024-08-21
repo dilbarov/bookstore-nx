@@ -2,7 +2,7 @@ import { IBase } from '@bookstore-nx/entities';
 import { Column, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 } from 'uuid';
 
-export class BaseEntity implements IBase {
+export class BaseTypeormEntity implements IBase {
   @PrimaryGeneratedColumn('uuid')
   public id: string = v4()
 

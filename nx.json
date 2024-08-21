@@ -36,7 +36,7 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/api-gateway-e2e/**/*"]
+      "exclude": ["apps/api-gateway-e2e/**/*", "apps/identity-e2e/**/*"]
     },
     {
       "plugin": "@nx/vite/plugin",
