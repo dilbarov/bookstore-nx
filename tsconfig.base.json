@@ -16,6 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@bookstore-nx/common": ["packages/common/src/index.ts"],
       "@bookstore-nx/entities": ["packages/entities/src/index.ts"],
       "@bookstore-nx/microservices": ["packages/microservices/src/index.ts"]
     }

@@ -8,4 +8,8 @@ export class AuthFacade {
     private readonly queryBus: QueryBus,
     private readonly eventBus: EventBus,
   ) {}
+
+  public commands = {};
+  public queries = {};
+  public events = {};
 }

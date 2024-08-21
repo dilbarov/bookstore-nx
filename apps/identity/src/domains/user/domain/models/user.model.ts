@@ -1,6 +1,6 @@
 import { IUser } from '@bookstore-nx/entities';
 import { BaseModel } from '@bookstore-nx/microservices';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UserModel extends BaseModel implements IUser {
   @IsString()
@@ -9,7 +9,8 @@ export class UserModel extends BaseModel implements IUser {
   public email: string;
 
   @IsString()
-  public password: string;
+  @IsOptional()
+  public password?: string;
 
   public constructor() {
     super();

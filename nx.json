@@ -6,6 +6,7 @@
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/.eslintrc.js",
       "!{projectRoot}/eslint.config.js",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
@@ -64,6 +65,13 @@
         "style": "none",
         "linter": "eslint"
       }
+    }
+  },
+  "targetDefaults": {
+    "@nx/js:swc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   }
 }

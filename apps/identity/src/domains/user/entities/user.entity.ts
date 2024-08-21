@@ -5,7 +5,7 @@ import { Column } from 'typeorm';
 export class UserEntity extends BaseTypeormEntity implements IUser {
   @Column({
     length: 100,
-    type: 'character varying'
+    type: 'character varying',
   })
   public email: string;
 

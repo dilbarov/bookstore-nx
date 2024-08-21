@@ -6,8 +6,6 @@ import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserAdapter implements UserRepository {
-  public constructor() {}
-
   public findAll(): Promise<[UserAggregate[], number]> {
     return Promise.resolve([[], 0]);
   }
