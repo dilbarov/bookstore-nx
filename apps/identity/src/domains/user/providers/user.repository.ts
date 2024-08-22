@@ -11,7 +11,5 @@ export abstract class UserRepository {
 
   public abstract save(user: IUser): Promise<UserAggregate>;
 
-  public abstract update(
-    user: Pick<IUser, 'id'> & Partial<IUser>,
-  ): Promise<UserAggregate>;
+  public abstract update(user: Pick<IUser, 'id'> & Partial<IUser>): Promise<UserAggregate>;
 }

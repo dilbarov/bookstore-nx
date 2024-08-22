@@ -28,9 +28,7 @@ export class UserAdapter implements UserRepository {
     }
   }
 
-  public update(
-    user: Pick<IUser, 'id'> & Partial<IUser>,
-  ): Promise<UserAggregate> {
+  public update(user: Pick<IUser, 'id'> & Partial<IUser>): Promise<UserAggregate> {
     if (user) {
       return Promise.resolve(undefined);
     }

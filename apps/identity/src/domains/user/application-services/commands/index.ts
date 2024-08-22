@@ -6,6 +6,4 @@ import { CreateUserCommandHandler } from './create-user/create-user.command-hand
 export * from './create-user/create-user.command';
 export * from './create-user/create-user.command-handler';
 
-export const USER_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [
-  CreateUserCommandHandler,
-];
+export const USER_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [CreateUserCommandHandler];

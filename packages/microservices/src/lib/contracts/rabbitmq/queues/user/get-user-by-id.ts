@@ -5,11 +5,11 @@ import { AmqpBaseResponse } from '../../base/amqp-base-response.interface';
 import { QueueDeclaration } from '../../base/queue-declaration.interface';
 import { EXCHANGE_USER } from '../../exchanges';
 
-export namespace GetUserContract {
+export namespace GetUserByIdContract {
   export const queue: QueueDeclaration = {
     exchange: EXCHANGE_USER,
-    queue: `${EXCHANGE_USER.name}-get`,
-    routingKey: `${EXCHANGE_USER.name}-get`,
+    queue: `${EXCHANGE_USER.name}-get-by-id`,
+    routingKey: `${EXCHANGE_USER.name}-get-by-id`,
     queueOptions: {
       durable: true,
     },

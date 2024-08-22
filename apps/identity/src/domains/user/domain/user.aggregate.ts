@@ -13,8 +13,7 @@ export class UserAggregate extends UserModel {
     Object.assign(_user, user);
 
     _user.createdAt = user.createdAt ? new Date(user.createdAt) : new Date();
-    _user.updatedAt =
-      user.id || !user.updatedAt ? new Date() : new Date(user.updatedAt);
+    _user.updatedAt = user.id || !user.updatedAt ? new Date() : new Date(user.updatedAt);
 
     validateAggregationModel(_user);
 

@@ -6,9 +6,6 @@ import { UserModel } from '../models/user.model';
 export class CreateUserDto extends PickType(UserModel, ['email', 'password']) {
   public constructor(partial: Partial<CreateUserDto> = {}) {
     super();
-    Object.assign(
-      this,
-      filterFields<CreateUserDto>(partial, ['email', 'password']),
-    );
+    Object.assign(this, filterFields<CreateUserDto>(partial, ['email', 'password']));
   }
 }

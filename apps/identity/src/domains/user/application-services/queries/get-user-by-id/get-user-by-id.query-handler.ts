@@ -2,15 +2,13 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { UserAggregate } from '../../../domain/user.aggregate';
 import { UserRepository } from '../../../providers/user.repository';
-import { GetUserQuery } from './get-user.query';
+import { GetUserByIdQuery } from './get-user-by-id.query';
 
-@QueryHandler(GetUserQuery)
-export class GetUserQueryHandler
-  implements IQueryHandler<GetUserQuery, UserAggregate>
-{
+@QueryHandler(GetUserByIdQuery)
+export class GetUserByIdQueryHandler implements IQueryHandler<GetUserByIdQuery, UserAggregate> {
   public constructor(private readonly userRepository: UserRepository) {}
 
-  public async execute({ userId }: GetUserQuery): Promise<UserAggregate> {
+  public async execute({ userId }: GetUserByIdQuery): Promise<UserAggregate> {
     return await this.userRepository.findById(userId);
   }
 }
