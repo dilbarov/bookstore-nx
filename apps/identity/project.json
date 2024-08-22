@@ -5,10 +5,39 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/identity",
+        "main": "apps/identity/src/main.ts",
+        "tsConfig": "apps/identity/tsconfig.app.json",
+        "assets": [
+          "apps/identity/src/assets"
+        ],
+        "isolatedConfig": true
+      },
+      "configurations": {
+        "development": {
+          "webpackConfig": "apps/identity/webpack.hmr.config.js"
+        },
+        "production": {
+          "webpackConfig": "apps/identity/webpack.config.js",
+          "generatePackageJson": true
+        }
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "buildTarget": "identity:build",
         "runBuildTargetDependencies": false
@@ -20,6 +49,12 @@
         "production": {
           "buildTarget": "identity:build:production"
         }
+      }
+    },
+    "migrations:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "set \"TS_NODE_PROJECT=apps/identity/tsconfig.app.json\" && ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./apps/identity/ormconfig.ts migration:generate -o"
       }
     }
   }

@@ -10,6 +10,7 @@
       "files": [
         "*.ts"
       ],
+      "excludedFiles": ["src/migrations/**/*"],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "project": ["apps/identity/tsconfig.app.json", "apps/identity/tsconfig.spec.json"],

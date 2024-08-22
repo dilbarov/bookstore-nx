@@ -1,36 +1,66 @@
 import { IUser } from '@bookstore-nx/entities';
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { isUUID } from 'class-validator';
+import { Repository } from 'typeorm';
 
+import { UserQuery } from '../domain/interfaces/query';
 import { UserAggregate } from '../domain/user.aggregate';
+import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserAdapter implements UserRepository {
-  public findAll(): Promise<[UserAggregate[], number]> {
-    return Promise.resolve([[], 0]);
+  public constructor(@InjectRepository(UserEntity) private readonly _userRepository: Repository<UserEntity>) {}
+
+  public async findAll({ search, skip, take, orderDirection, orderBy }: UserQuery): Promise<[UserAggregate[], number]> {
+    const order = orderBy
+      ? {
+          [orderBy]: orderDirection || 'asc',
+        }
+      : undefined;
+
+    const [items, count] = await this._userRepository.findAndCount({
+      where: {
+        email: search ? `%${search}%` : undefined,
+      },
+      skip,
+      take,
+      order,
+    });
+
+    return [items.map(UserAggregate.create), count];
   }
 
-  public findByEmail(email: string): Promise<UserAggregate | null> {
-    if (email) {
-      return Promise.resolve(undefined);
+  public async findByEmail(email: string): Promise<UserAggregate | null> {
+    if (email.length === 0) {
+      return null;
     }
+
+    const result = await this._userRepository.findOne({ where: { email } });
+    return UserAggregate.create(result);
   }
 
-  public findById(id: string): Promise<UserAggregate | null> {
-    if (id) {
-      return Promise.resolve(undefined);
+  public async findById(id: string): Promise<UserAggregate | null> {
+    if (id.length === 0 || !isUUID(id)) {
+      return null;
     }
+
+    const result = await this._userRepository.findOne({ where: { id } });
+    return UserAggregate.create(result);
   }
 
-  public save(user: IUser): Promise<UserAggregate> {
-    if (user) {
-      return Promise.resolve(undefined);
-    }
+  public async create(entity: IUser & { password: string }): Promise<UserAggregate> {
+    return await this.save(entity);
   }
 
-  public update(user: Pick<IUser, 'id'> & Partial<IUser>): Promise<UserAggregate> {
-    if (user) {
-      return Promise.resolve(undefined);
-    }
+  public async save(entity: IUser): Promise<UserAggregate> {
+    const result = await this._userRepository.save(entity);
+    return await this.findById(result.id);
+  }
+
+  public async update(id: string, entity: Partial<IUser>): Promise<UserAggregate> {
+    await this._userRepository.update(id, { ...entity, updatedAt: new Date() });
+    return await this.findById(id);
   }
 }

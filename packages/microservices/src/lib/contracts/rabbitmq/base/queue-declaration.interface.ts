@@ -1,9 +1,7 @@
-import { QueueOptions } from '@golevelup/nestjs-rabbitmq';
-
-import { RabbitExchangeConfig } from './rabbit-exchange.config';
+import { QueueOptions, RabbitMQExchangeConfig } from '@golevelup/nestjs-rabbitmq';
 
 export interface QueueDeclaration {
-  exchange: RabbitExchangeConfig;
+  exchange: RabbitMQExchangeConfig;
   routingKey: string;
   queue: string;
   queueOptions: QueueOptions;

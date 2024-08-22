@@ -1,5 +1,6 @@
 import { Global, Module, OnModuleInit } from '@nestjs/common';
 import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 import {
   USER_COMMANDS_HANDLERS,
@@ -8,13 +9,14 @@ import {
   UserFacade,
 } from './application-services';
 import { UserChannelsModule } from './channels/user-channels.module';
+import { UserEntity } from './entities/user.entity';
 import { UserAdapter } from './providers/user.adapter';
 import { UserRepository } from './providers/user.repository';
 import { userFacadeFactory } from './providers/user-facade.factory';
 
 @Global()
 @Module({
-  imports: [CqrsModule, UserChannelsModule],
+  imports: [CqrsModule, UserChannelsModule, TypeOrmModule.forFeature([UserEntity])],
   providers: [
     {
       provide: UserRepository,

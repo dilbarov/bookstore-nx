@@ -1,28 +1,28 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource, EntitySchema, MixedList } from 'typeorm';
+import { DataSource, DataSourceOptions, EntitySchema, MixedList } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 
-import { ConnectionType, typeormConfig } from './typeorm.config';
+interface Options {
+  entities: MixedList<string | Function | EntitySchema>;
+  getConfig: (configService: ConfigService) => DataSourceOptions;
+}
 
 @Module({})
 export class TypeormModule {
-  public static forRoot(
-    type: ConnectionType,
-    connectionUrl: string,
-    entities: MixedList<string | Function | EntitySchema>
-  ): DynamicModule {
+  public static forRoot(options: Options): DynamicModule {
     return {
       module: TypeormModule,
       imports: [
         TypeOrmModule.forRootAsync({
           inject: [ConfigService],
-          useFactory: () => {
-            const appDataSource = new DataSource(typeormConfig(connectionUrl, type, entities));
+          useFactory: (configService: ConfigService) => {
+            const connectionOptions = options.getConfig(configService);
+            const appDataSource = new DataSource({ ...connectionOptions, entities: options.entities });
             return appDataSource.options;
-          }
-        })
-      ]
+          },
+        }),
+      ],
     };
   }
 }
