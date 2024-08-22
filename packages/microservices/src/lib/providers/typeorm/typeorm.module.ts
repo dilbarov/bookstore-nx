@@ -1,9 +1,10 @@
 import { DynamicModule, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource, DataSourceOptions, EntitySchema, MixedList } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 
 interface Options {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   entities: MixedList<string | Function | EntitySchema>;
   getConfig: (configService: ConfigService) => DataSourceOptions;
 }

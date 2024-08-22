@@ -1,5 +1,6 @@
 import { Any } from '@bookstore-nx/common';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { DataSource } from 'typeorm';
@@ -9,9 +10,19 @@ import { AppModule } from './app/app.module';
 declare const module: Any;
 
 const bootstrap = async (): Promise<void> => {
+  const configService = new ConfigService();
+  const amqpHost = configService.get('AMQP_HOST');
+  const amqpPort = configService.get('AMQP_PORT');
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.RMQ,
-    options: {},
+    options: {
+      urls: [`amqp://${amqpHost}:${amqpPort}`],
+      queue: 'identity_queue',
+      queueOptions: {
+        durable: false,
+      },
+      noAck: true,
+    },
   });
 
   // Connect to database

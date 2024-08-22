@@ -11,7 +11,7 @@ export class UserAggregate extends UserModel {
     super();
   }
 
-  public static create(user: Partial<IUser>): UserAggregate {
+  public static create(user: Partial<IUser & { password?: string }>): UserAggregate {
     const _user = new UserAggregate();
     Object.assign(_user, user);
 
@@ -25,7 +25,7 @@ export class UserAggregate extends UserModel {
     return _user;
   }
 
-  public comparePassword(password: string): boolean {
+  public validateUserCredentials(password: string): boolean {
     return bcrypt.compareSync(password, this._password);
   }
 }
