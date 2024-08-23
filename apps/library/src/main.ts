@@ -1,6 +1,6 @@
 import { Any } from '@bookstore-nx/common';
+import { QUEUE_LIBRARY_OPTIONS } from '@bookstore-nx/microservices';
 import { Logger } from '@nestjs/common';
-import { QUEUE_BOOKS_OPTIONS } from '@bookstore-nx/microservices';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -17,7 +17,7 @@ const bootstrap = async (): Promise<void> => {
     transport: Transport.RMQ,
     options: {
       urls: [`amqp://${amqpHost}:${amqpPort}`],
-      ...QUEUE_BOOKS_OPTIONS,
+      ...QUEUE_LIBRARY_OPTIONS,
       noAck: true,
     },
   });

@@ -1,7 +1,7 @@
 {
-  "name": "books",
+  "name": "library",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/books/src",
+  "sourceRoot": "apps/library/src",
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -14,20 +14,20 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/books",
-        "main": "apps/books/src/main.ts",
-        "tsConfig": "apps/books/tsconfig.app.json",
+        "outputPath": "dist/library",
+        "main": "apps/library/src/main.ts",
+        "tsConfig": "apps/library/tsconfig.app.json",
         "assets": [
-          "apps/books/src/assets"
+          "apps/library/src/assets"
         ],
         "isolatedConfig": true
       },
       "configurations": {
         "development": {
-          "webpackConfig": "apps/books/webpack.hmr.config.js"
+          "webpackConfig": "apps/library/webpack.hmr.config.js"
         },
         "production": {
-          "webpackConfig": "apps/books/webpack.config.js",
+          "webpackConfig": "apps/library/webpack.config.js",
           "generatePackageJson": true
         }
       }
@@ -37,15 +37,15 @@
       "defaultConfiguration": "development",
       "dependsOn": ["build"],
       "options": {
-        "buildTarget": "books:build",
+        "buildTarget": "library:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "books:build:development"
+          "buildTarget": "library:build:development"
         },
         "production": {
-          "buildTarget": "books:build:production"
+          "buildTarget": "library:build:production"
         }
       }
     }
