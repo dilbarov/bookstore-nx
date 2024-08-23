@@ -1,7 +1,7 @@
 {
-  "name": "api-gateway",
+  "name": "books",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/api-gateway/src",
+  "sourceRoot": "apps/books/src",
   "projectType": "application",
   "tags": [],
   "targets": {
@@ -14,20 +14,20 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/api-gateway",
-        "main": "apps/api-gateway/src/main.ts",
-        "tsConfig": "apps/api-gateway/tsconfig.app.json",
+        "outputPath": "dist/books",
+        "main": "apps/books/src/main.ts",
+        "tsConfig": "apps/books/tsconfig.app.json",
         "assets": [
-          "apps/api-gateway/src/assets"
+          "apps/books/src/assets"
         ],
         "isolatedConfig": true
       },
       "configurations": {
         "development": {
-          "webpackConfig": "apps/api-gateway/webpack.hmr.config.js"
+          "webpackConfig": "apps/books/webpack.hmr.config.js"
         },
         "production": {
-          "webpackConfig": "apps/api-gateway/webpack.config.js",
+          "webpackConfig": "apps/books/webpack.config.js",
           "generatePackageJson": true
         }
       }
@@ -35,27 +35,19 @@
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "buildTarget": "api-gateway:build",
+        "buildTarget": "books:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "api-gateway:build:development"
+          "buildTarget": "books:build:development"
         },
         "production": {
-          "buildTarget": "api-gateway:build:production"
+          "buildTarget": "books:build:production"
         }
       }
-    },
-    "docker-build": {
-      "dependsOn": [
-        "build"
-      ],
-      "command": "docker build -f apps/api-gateway/Dockerfile . -t api-gateway"
     }
   }
 }

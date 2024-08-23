@@ -1,4 +1,4 @@
-import { UserQuery } from '@bookstore-nx/entities';
+import { IUserQuery } from '@bookstore-nx/entities';
 import { IUser } from '@bookstore-nx/entities';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +13,13 @@ import { UserRepository } from './user.repository';
 export class UserAdapter implements UserRepository {
   public constructor(@InjectRepository(UserEntity) private readonly _userRepository: Repository<UserEntity>) {}
 
-  public async findAll({ search, skip, take, orderDirection, orderBy }: UserQuery): Promise<[UserAggregate[], number]> {
+  public async findAll({
+    search,
+    skip,
+    take,
+    orderDirection,
+    orderBy,
+  }: IUserQuery): Promise<[UserAggregate[], number]> {
     const order = orderBy
       ? {
           [orderBy]: orderDirection || 'asc',

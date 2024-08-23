@@ -7,7 +7,7 @@ import { AppModule } from './app/app.module';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { MicroserviceExceptionFilter } from './exception-filters/microservice.exception-filter';
 
-const bootstrap = async () => {
+const bootstrap = async (): Promise<void> => {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);

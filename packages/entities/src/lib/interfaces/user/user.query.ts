@@ -1,6 +1,6 @@
-import { IUser } from '@bookstore-nx/entities';
+import { IUser } from './user';
 
-export interface UserQuery {
+export interface IUserQuery {
   take?: number;
   skip?: number;
   search?: string;

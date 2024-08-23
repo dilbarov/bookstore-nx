@@ -1,4 +1,4 @@
-import { IBase } from '../base/base';
+import { IBase } from '../base';
 
 export interface IUser extends IBase {
   email: string;
