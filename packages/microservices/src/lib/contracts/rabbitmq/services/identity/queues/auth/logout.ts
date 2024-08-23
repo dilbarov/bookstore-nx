@@ -8,7 +8,8 @@ export namespace LogoutContract {
   export const queue: QueueDeclaration = {
     exchange: EXCHANGE_AUTH,
     routingKey: `${EXCHANGE_AUTH.name}-logout`,
-    ...QUEUE_IDENTITY_OPTIONS,
+    queue: `${EXCHANGE_AUTH.name}-logout`,
+    queueOptions: QUEUE_IDENTITY_OPTIONS.queueOptions,
   };
 
   export type request = AmqpBaseRequest<ILogoutPayload>;

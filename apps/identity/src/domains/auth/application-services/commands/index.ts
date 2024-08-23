@@ -6,15 +6,21 @@ import { GenerateRefreshTokenCommandHandler } from './generate-refresh-token/gen
 import { LoginCommandHandler } from './login/login.command-handler';
 import { LogoutCommandHandler } from './logout/logout.command-handler';
 import { RegisterCommandHandler } from './register/register.command-handler';
+import { GenerateTokensCommandHandler } from './generate-tokens/generate-tokens.command-handler';
+import { RefreshTokensCommandHandler } from './refresh-tokens/refresh-tokens.command-handler';
 
 export * from './generate-access-token/generate-access-token.command';
 export * from './generate-access-token/generate-access-token.command-handler';
 export * from './generate-refresh-token/generate-refresh-token.command';
 export * from './generate-refresh-token/generate-refresh-token.command-handler';
+export * from './generate-tokens/generate-tokens.command';
+export * from './generate-tokens/generate-tokens.command-handler';
 export * from './login/login.command';
 export * from './login/login.command-handler';
 export * from './logout/logout.command';
 export * from './logout/logout.command-handler';
+export * from './refresh-tokens/refresh-tokens.command';
+export * from './refresh-tokens/refresh-tokens.command-handler';
 export * from './register/register.command';
 export * from './register/register.command-handler';
 
@@ -24,4 +30,6 @@ export const AUTH_COMMANDS_HANDLERS: Type<ICommandHandler>[] = [
   RegisterCommandHandler,
   GenerateAccessTokenCommandHandler,
   GenerateRefreshTokenCommandHandler,
+  GenerateTokensCommandHandler,
+  RefreshTokensCommandHandler,
 ];

@@ -1,6 +1,6 @@
-import { ITokens } from '@bookstore-nx/entities';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { ITokens } from '../../interfaces';
 
 @ObjectType()
 export class TokensDto implements ITokens {

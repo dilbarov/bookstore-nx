@@ -38,6 +38,11 @@ export class UserAdapter implements UserRepository {
     }
 
     const result = await this._userRepository.findOne({ where: { email } });
+
+    if (!result) {
+      return null;
+    }
+
     return UserAggregate.create(result);
   }
 
@@ -47,6 +52,11 @@ export class UserAdapter implements UserRepository {
     }
 
     const result = await this._userRepository.findOne({ where: { id } });
+
+    if (!result) {
+      return null;
+    }
+
     return UserAggregate.create(result);
   }
 

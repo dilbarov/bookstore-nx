@@ -9,7 +9,8 @@ export namespace GetUserByEmailContract {
   export const queue: QueueDeclaration = {
     exchange: EXCHANGE_USER,
     routingKey: `${EXCHANGE_USER.name}-get-by-email`,
-    ...QUEUE_IDENTITY_OPTIONS,
+    queue: `${EXCHANGE_USER.name}-get-by-email`,
+    queueOptions: QUEUE_IDENTITY_OPTIONS.queueOptions,
   };
 
   export type request = AmqpBaseRequest<string>;

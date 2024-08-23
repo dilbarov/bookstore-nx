@@ -9,7 +9,8 @@ export namespace LoginContract {
   export const queue: QueueDeclaration = {
     exchange: EXCHANGE_AUTH,
     routingKey: `${EXCHANGE_AUTH.name}-login`,
-    ...QUEUE_IDENTITY_OPTIONS,
+    queue: `${EXCHANGE_AUTH.name}-login`,
+    queueOptions: QUEUE_IDENTITY_OPTIONS.queueOptions,
   };
 
   export type request = AmqpBaseRequest<ILoginPayload>;

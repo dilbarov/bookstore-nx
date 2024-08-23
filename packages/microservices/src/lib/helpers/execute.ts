@@ -1,4 +1,5 @@
 import { AmqpBaseRequest, AmqpBaseResponse } from '../contracts';
+import { MicroserviceBaseError } from '../errors';
 
 export const execute = async <TArg, TResult>(
   request: AmqpBaseRequest<TArg>,
@@ -12,14 +13,11 @@ export const execute = async <TArg, TResult>(
       payload: result,
     };
   } catch (error) {
-    const _error = error as Error;
+    const _error = error as MicroserviceBaseError;
     return {
       ...rest,
       payload: null,
-      error: {
-        code: _error?.message || 'error',
-        message: _error?.message || JSON.stringify(_error),
-      },
+      error: new MicroserviceBaseError(_error.code, _error.message || JSON.stringify(_error), _error.statusCode),
     };
   }
 };

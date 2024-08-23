@@ -1,4 +1,10 @@
-import { execute, LoginContract, LogoutContract, RegisterContract } from '@bookstore-nx/microservices';
+import {
+  execute,
+  LoginContract,
+  LogoutContract,
+  RefreshTokensContract,
+  RegisterContract,
+} from '@bookstore-nx/microservices';
 import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
 
@@ -41,6 +47,18 @@ export class AuthConsumerService {
     return await execute<LogoutContract.request['payload'], LogoutContract.response['payload']>(
       request,
       async payload => await this.authFacade.commands.logout(payload),
+    );
+  }
+
+  @RabbitRPC({
+    exchange: RefreshTokensContract.queue.exchange.name,
+    routingKey: RefreshTokensContract.queue.routingKey,
+    queue: RefreshTokensContract.queue.queue,
+  })
+  public async refreshTokens(request: RefreshTokensContract.request): Promise<RefreshTokensContract.response> {
+    return await execute<RefreshTokensContract.request['payload'], RefreshTokensContract.response['payload']>(
+      request,
+      async payload => await this.authFacade.commands.refreshTokens(payload),
     );
   }
 }

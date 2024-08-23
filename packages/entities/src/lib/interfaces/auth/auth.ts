@@ -13,3 +13,8 @@ export interface ILogoutPayload {
   id: string;
   fingerprint: string;
 }
+
+export interface IRefreshTokensPayload {
+  refreshToken: string;
+  fingerprint: string;
+}

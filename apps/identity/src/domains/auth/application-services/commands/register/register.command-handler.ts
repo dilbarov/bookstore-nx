@@ -1,10 +1,12 @@
 import { TokensDto } from '@bookstore-nx/entities';
+import { BadRequestError } from '@bookstore-nx/microservices';
 import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { UserAggregate } from '../../../../user/domain/user.aggregate';
 import { UserRepository } from '../../../../user/providers/user.repository';
 import { LoginCommand } from '../login/login.command';
 import { RegisterCommand } from './register.command';
+import { CreateUserCommand } from '../../../../user/application-services';
 
 @CommandHandler(RegisterCommand)
 export class RegisterCommandHandler implements ICommandHandler<RegisterCommand, TokensDto> {
@@ -13,15 +15,16 @@ export class RegisterCommandHandler implements ICommandHandler<RegisterCommand, 
     private readonly userRepository: UserRepository,
   ) {}
 
-  public async execute({ payload: { email, password, fingerprint } }: RegisterCommand): Promise<TokensDto> {
-    const existingUser = await this.userRepository.findByEmail(email);
+  public async execute({ payload }: RegisterCommand): Promise<TokensDto> {
+    const { email, password, fingerprint } = payload;
 
+    const existingUser = await this.userRepository.findByEmail(email);
     if (existingUser) {
-      throw new Error(`User with email ${email} already exists.`);
+      throw new BadRequestError(`User with email ${email} already exists.`);
     }
 
     const userAggregate = UserAggregate.create({ email });
-    await this.userRepository.create({ ...userAggregate, password });
+    await this.commandBus.execute(new CreateUserCommand({ ...userAggregate, password }));
 
     return await this.commandBus.execute(new LoginCommand({ email, password, fingerprint }));
   }

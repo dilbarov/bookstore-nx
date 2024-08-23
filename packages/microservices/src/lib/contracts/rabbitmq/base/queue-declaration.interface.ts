@@ -1,4 +1,4 @@
-import { QueueOptions, RabbitMQExchangeConfig } from '@golevelup/nestjs-rabbitmq';
+import { QueueOptions, RabbitMQExchangeConfig, RequestOptions } from '@golevelup/nestjs-rabbitmq';
 
 export interface QueueDeclaration {
   exchange: RabbitMQExchangeConfig;
@@ -6,3 +6,5 @@ export interface QueueDeclaration {
   queue: string;
   queueOptions: QueueOptions;
 }
+
+export type AdditionalQueueOptions = Pick<RequestOptions, 'headers' | 'publishOptions'>;

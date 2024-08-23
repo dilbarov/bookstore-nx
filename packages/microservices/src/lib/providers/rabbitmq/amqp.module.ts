@@ -2,11 +2,13 @@ import {
   AmqpConnectionManager,
   RabbitMQExchangeConfig,
   RabbitMQModule,
-  RabbitRpcParamsFactory
-} from '@golevelup/nestjs-rabbitmq'
-import { DynamicModule, Module } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { amqpConfig } from './amqp.config'
+  RabbitRpcParamsFactory,
+} from '@golevelup/nestjs-rabbitmq';
+import { DynamicModule, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+
+import { amqpConfig } from './amqp.config';
+import { AmqpService } from './amqp.service';
 
 @Module({})
 export class AmqpModule {
@@ -16,11 +18,11 @@ export class AmqpModule {
       imports: [
         RabbitMQModule.forRootAsync(RabbitMQModule, {
           inject: [ConfigService],
-          useFactory: (configService: ConfigService) => amqpConfig(configService, exchanges)
-        })
+          useFactory: (configService: ConfigService) => amqpConfig(configService, exchanges),
+        }),
       ],
-      providers: [RabbitRpcParamsFactory, AmqpConnectionManager],
-      exports: [RabbitMQModule]
-    }
+      providers: [RabbitRpcParamsFactory, AmqpConnectionManager, AmqpService],
+      exports: [RabbitMQModule, AmqpService],
+    };
   }
 }

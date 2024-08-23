@@ -13,6 +13,7 @@ export class UserAggregate extends UserModel {
     const _user = new UserAggregate();
     Object.assign(_user, user);
 
+    _user.email = _user.email.toLowerCase();
     _user.createdAt = user.createdAt ? new Date(user.createdAt) : new Date();
     _user.updatedAt = user.updatedAt ? new Date(user.updatedAt) : new Date();
 
