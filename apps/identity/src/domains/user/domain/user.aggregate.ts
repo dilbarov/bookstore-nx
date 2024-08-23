@@ -1,8 +1,6 @@
+import { UserModel, validateAggregationModel } from '@bookstore-nx/entities';
 import { IUser } from '@bookstore-nx/entities';
-import { validateAggregationModel } from '@bookstore-nx/microservices';
 import * as bcrypt from 'bcrypt';
-
-import { UserModel } from './models/user.model';
 
 export class UserAggregate extends UserModel {
   private _password: string | null = null;

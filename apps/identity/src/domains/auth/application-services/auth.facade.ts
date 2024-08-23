@@ -1,10 +1,8 @@
+import { LoginDto, LogoutDto, TokensDto } from '@bookstore-nx/entities';
 import { IBaseFacade } from '@bookstore-nx/microservices';
 import { Injectable } from '@nestjs/common';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 
-import { LoginDto } from '../domain/dto/login.dto';
-import { LogoutDto } from '../domain/dto/logout.dto';
-import { TokensDto } from '../domain/dto/tokens.dto';
 import {
   LoginCommand,
   LoginCommandHandler,

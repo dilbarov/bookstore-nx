@@ -8,26 +8,79 @@
   "overrides": [
     {
       "files": [
-        "*.ts",
-        "*.tsx",
-        "*.js",
-        "*.jsx"
+        "*.ts"
       ],
-      "rules": {}
-    },
-    {
-      "files": [
-        "*.ts",
-        "*.tsx"
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": [
+          "apps/api-gateway/tsconfig.app.json",
+          "apps/api-gateway/tsconfig.spec.json"
+        ],
+        "sourceType": "module"
+      },
+      "plugins": [
+        "@typescript-eslint/eslint-plugin",
+        "simple-import-sort",
+        "deprecation",
+        "prettier"
       ],
-      "rules": {}
-    },
-    {
-      "files": [
-        "*.js",
-        "*.jsx"
+      "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
       ],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-namespace": "off",
+        "@typescript-eslint/interface-name-prefix": "off",
+        "@typescript-eslint/explicit-function-return-type": [
+          "error",
+          {
+            "allowExpressions": true
+          }
+        ],
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": [
+          "error",
+          {
+            "ignoreRestArgs": false
+          }
+        ],
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/explicit-member-accessibility": "error",
+        "@typescript-eslint/no-floating-promises": "error",
+        "object-shorthand": [
+          "error",
+          "always"
+        ],
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "eol-last": [
+          "error",
+          "always"
+        ],
+        "deprecation/deprecation": "warn",
+        "no-debugger": "error",
+        "no-console": "error",
+        "no-process-env": "error",
+        "require-await": [
+          "error"
+        ],
+        "no-return-await": "off",
+        "arrow-parens": [
+          "error",
+          "as-needed",
+          {
+            "requireForBlockBody": false
+          }
+        ],
+        "camelcase": "warn",
+        "func-style": [
+          "error",
+          "declaration",
+          {
+            "allowArrowFunctions": true
+          }
+        ]
+      }
     }
   ]
 }

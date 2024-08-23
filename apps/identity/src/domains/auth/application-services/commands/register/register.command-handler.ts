@@ -1,8 +1,8 @@
+import { TokensDto } from '@bookstore-nx/entities';
 import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { UserAggregate } from '../../../../user/domain/user.aggregate';
 import { UserRepository } from '../../../../user/providers/user.repository';
-import { TokensDto } from '../../../domain/dto/tokens.dto';
 import { LoginCommand } from '../login/login.command';
 import { RegisterCommand } from './register.command';
 

@@ -1,6 +1,5 @@
-import { IUser } from '@bookstore-nx/entities';
+import { IUser, UserQuery } from '@bookstore-nx/entities';
 
-import { UserQuery } from '../domain/interfaces/query';
 import { UserAggregate } from '../domain/user.aggregate';
 
 export abstract class UserRepository {

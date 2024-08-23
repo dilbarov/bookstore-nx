@@ -1,8 +1,8 @@
+import { CreateUserDto } from '@bookstore-nx/entities';
 import { IBaseFacade } from '@bookstore-nx/microservices';
 import { Injectable } from '@nestjs/common';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 
-import { CreateUserDto } from '../domain/dto/create-user.dto';
 import { UserAggregate } from '../domain/user.aggregate';
 import { CreateUserCommand, CreateUserCommandHandler } from './commands';
 import { GetUserByEmailQuery, GetUserByEmailQueryHandler, GetUserByIdQuery, GetUserByIdQueryHandler } from './queries';

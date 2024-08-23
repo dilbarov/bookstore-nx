@@ -1,3 +1,2 @@
-export * from './lib/auth';
-export * from './lib/base';
-export * from './lib/user';
+export * from './lib/interfaces';
+export * from './lib/models';

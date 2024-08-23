@@ -6,6 +6,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { DataSource } from 'typeorm';
 
 import { AppModule } from './app/app.module';
+import { QUEUE_IDENTITY_OPTIONS } from '@bookstore-nx/microservices';
 
 declare const module: Any;
 
@@ -17,10 +18,7 @@ const bootstrap = async (): Promise<void> => {
     transport: Transport.RMQ,
     options: {
       urls: [`amqp://${amqpHost}:${amqpPort}`],
-      queue: 'identity_queue',
-      queueOptions: {
-        durable: false,
-      },
+      ...QUEUE_IDENTITY_OPTIONS,
       noAck: true,
     },
   });

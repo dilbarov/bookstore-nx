@@ -1,10 +1,10 @@
+import { UserQuery } from '@bookstore-nx/entities';
 import { IUser } from '@bookstore-nx/entities';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
 import { Repository } from 'typeorm';
 
-import { UserQuery } from '../domain/interfaces/query';
 import { UserAggregate } from '../domain/user.aggregate';
 import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from './user.repository';

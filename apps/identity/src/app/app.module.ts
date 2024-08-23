@@ -1,10 +1,4 @@
-import {
-  AmqpModule,
-  EnvironmentsModule,
-  EXCHANGE_AUTH,
-  EXCHANGE_USER,
-  TypeormModule,
-} from '@bookstore-nx/microservices';
+import { AmqpModule, EnvironmentsModule, IDENTITY_EXCHANGES, TypeormModule } from '@bookstore-nx/microservices';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RedisModule } from '@nestjs-modules/ioredis';
@@ -17,7 +11,7 @@ import { getRedisConfig } from '../helpers/get-redis-config';
 @Module({
   imports: [
     EnvironmentsModule,
-    AmqpModule.forRoot([EXCHANGE_USER, EXCHANGE_AUTH]),
+    AmqpModule.forRoot(IDENTITY_EXCHANGES),
     TypeormModule.forRoot({
       entities: [UserEntity],
       getConfig: getPostgresConfig,

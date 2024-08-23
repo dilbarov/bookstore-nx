@@ -1,4 +1,4 @@
-import { LoginDto } from '../../../domain/dto/login.dto';
+import { LoginDto } from '@bookstore-nx/entities';
 
 export class LoginCommand {
   public constructor(public readonly payload: LoginDto) {}

@@ -1,11 +1,11 @@
+import { EnvironmentsModule } from '@bookstore-nx/microservices';
 import { Module } from '@nestjs/common';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ProvidersModule } from '../providers/providers.module';
+import { ResolversModule } from '../resolvers/resolvers.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [EnvironmentsModule, ProvidersModule, ResolversModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

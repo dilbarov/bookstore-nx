@@ -1,7 +1,7 @@
+import { TokensDto } from '@bookstore-nx/entities';
 import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { UserRepository } from '../../../../user/providers/user.repository';
-import { TokensDto } from '../../../domain/dto/tokens.dto';
 import { TokenRepository } from '../../../providers/token.repository';
 import { GenerateAccessTokenCommand } from '../generate-access-token/generate-access-token.command';
 import { GenerateRefreshTokenCommand } from '../generate-refresh-token/generate-refresh-token.command';

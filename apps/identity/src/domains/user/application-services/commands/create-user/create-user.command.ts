@@ -1,4 +1,4 @@
-import { CreateUserDto } from '../../../domain/dto/create-user.dto';
+import { CreateUserDto } from '@bookstore-nx/entities';
 
 export class CreateUserCommand {
   public constructor(public readonly user: CreateUserDto) {}
