@@ -5,7 +5,7 @@ import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 
 import { BookAggregate } from '../domain/book.aggregate';
 import { CreateBookCommand, CreateBookCommandHandler } from './commands';
-import { GetBookQuery, GetBookQueryHandler, GetBooksQuery, GetBooksQueryHandler } from './queries';
+import { GetBookByIdQuery, GetBookByIdQueryHandler, GetBooksQuery, GetBooksQueryHandler } from './queries';
 
 @Injectable()
 export class BookFacade implements IBaseFacade {
@@ -34,8 +34,8 @@ export class BookFacade implements IBaseFacade {
   }
 
   private async getBookById(id: string): Promise<BookAggregate> {
-    return await this.queryBus.execute<GetBookQuery, Awaited<ReturnType<GetBookQueryHandler['execute']>>>(
-      new GetBookQuery(id),
+    return await this.queryBus.execute<GetBookByIdQuery, Awaited<ReturnType<GetBookByIdQueryHandler['execute']>>>(
+      new GetBookByIdQuery(id),
     );
   }
 

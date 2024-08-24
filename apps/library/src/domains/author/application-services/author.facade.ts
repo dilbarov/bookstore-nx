@@ -5,7 +5,7 @@ import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 
 import { AuthorAggregate } from '../domain/author.aggregate';
 import { CreateAuthorCommand, CreateAuthorCommandHandler } from './commands';
-import { GetAuthorQuery, GetAuthorQueryHandler, GetAuthorsQuery, GetAuthorsQueryHandler } from './queries';
+import { GetAuthorByIdQuery, GetAuthorByIdQueryHandler, GetAuthorsQuery, GetAuthorsQueryHandler } from './queries';
 
 @Injectable()
 export class AuthorFacade implements IBaseFacade {
@@ -35,8 +35,8 @@ export class AuthorFacade implements IBaseFacade {
   }
 
   private async getAuthorById(id: string): Promise<AuthorAggregate> {
-    return await this.queryBus.execute<GetAuthorQuery, Awaited<ReturnType<GetAuthorQueryHandler['execute']>>>(
-      new GetAuthorQuery(id),
+    return await this.queryBus.execute<GetAuthorByIdQuery, Awaited<ReturnType<GetAuthorByIdQueryHandler['execute']>>>(
+      new GetAuthorByIdQuery(id),
     );
   }
 

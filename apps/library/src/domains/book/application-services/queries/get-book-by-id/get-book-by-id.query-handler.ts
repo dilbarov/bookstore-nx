@@ -2,13 +2,13 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { BookAggregate } from '../../../domain/book.aggregate';
 import { BookRepository } from '../../../providers/book.repository';
-import { GetBookQuery } from './get-book.query';
+import { GetBookByIdQuery } from './get-book-by-id.query';
 
-@QueryHandler(GetBookQuery)
-export class GetBookQueryHandler implements IQueryHandler<GetBookQuery, BookAggregate> {
+@QueryHandler(GetBookByIdQuery)
+export class GetBookByIdQueryHandler implements IQueryHandler<GetBookByIdQuery, BookAggregate> {
   public constructor(private readonly bookRepository: BookRepository) {}
 
-  public async execute({ id }: GetBookQuery): Promise<BookAggregate> {
+  public async execute({ id }: GetBookByIdQuery): Promise<BookAggregate> {
     return await this.bookRepository.findById(id);
   }
 }
