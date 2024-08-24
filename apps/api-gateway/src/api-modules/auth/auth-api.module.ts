@@ -1,0 +1,11 @@
+import { Module } from '@nestjs/common';
+import { AmqpModule, EXCHANGE_AUTH } from '@bookstore-nx/microservices';
+
+import { AuthResolver } from './resolvers/auth.resolver';
+import { AuthService } from './services/auth.service';
+
+@Module({
+  imports: [AmqpModule.forRoot([EXCHANGE_AUTH])],
+  providers: [AuthResolver, AuthService],
+})
+export class AuthApiModule {}

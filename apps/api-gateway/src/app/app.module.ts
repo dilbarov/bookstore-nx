@@ -1,11 +1,10 @@
 import { EnvironmentsModule } from '@bookstore-nx/microservices';
 import { Module } from '@nestjs/common';
-
-import { ResolversModule } from '../resolvers/resolvers.module';
 import { ProvidersModule } from '../shared/providers/providers.module';
+import { ApiModule } from '../api-modules/api.module';
 
 @Module({
-  imports: [EnvironmentsModule, ProvidersModule, ResolversModule],
+  imports: [EnvironmentsModule, ProvidersModule, ApiModule],
   controllers: [],
   providers: [],
 })
