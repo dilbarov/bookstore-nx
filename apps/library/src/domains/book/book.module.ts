@@ -8,10 +8,10 @@ import {
   BOOK_QUERIES_HANDLERS,
   BookFacade,
 } from './application-services';
-import { BookRepository } from './providers/book.repository';
-import { BookAdapter } from './providers/book.adapter';
-import { bookFacadeFactory } from './providers/book-facade.factory';
 import { BookChannelsModule } from './channels/book-channels.module';
+import { BookAdapter } from './providers/book.adapter';
+import { BookRepository } from './providers/book.repository';
+import { bookFacadeFactory } from './providers/book-facade.factory';
 import { BookSchema } from './schemas/book.schema';
 
 @Module({

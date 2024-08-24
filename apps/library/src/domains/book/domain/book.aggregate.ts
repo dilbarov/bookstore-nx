@@ -1,5 +1,6 @@
-import { BookModel } from '../../../../../../packages/entities/src/lib/models/book/book.model';
+import { BookModel } from '@bookstore-nx/entities';
 import { IBook, validateAggregationModel } from '@bookstore-nx/entities';
+
 import { AuthorAggregate } from '../../author/domain/author.aggregate';
 
 export class BookAggregate extends BookModel {

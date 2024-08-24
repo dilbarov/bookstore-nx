@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { BookConsumerService } from './book-consumer.service';
 
 @Module({

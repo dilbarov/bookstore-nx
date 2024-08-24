@@ -1,4 +1,4 @@
-import { AmqpModule, LIBRARY_EXCHANGES, EnvironmentsModule } from '@bookstore-nx/microservices';
+import { AmqpModule, EnvironmentsModule, LIBRARY_EXCHANGES } from '@bookstore-nx/microservices';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';

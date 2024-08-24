@@ -1,5 +1,6 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
+import { MongooseModule } from '@nestjs/mongoose';
 
 import {
   AUTHOR_COMMANDS_HANDLERS,
@@ -7,12 +8,11 @@ import {
   AUTHOR_QUERIES_HANDLERS,
   AuthorFacade,
 } from './application-services';
-import { authorFacadeFactory } from './providers/author-facade.factory';
-import { AuthorRepository } from './providers/author.repository';
-import { AuthorAdapter } from './providers/author.adapter';
 import { AuthorChannelsModule } from './channels/author-channels.module';
+import { AuthorAdapter } from './providers/author.adapter';
+import { AuthorRepository } from './providers/author.repository';
+import { authorFacadeFactory } from './providers/author-facade.factory';
 import { AuthorSchema } from './schemas/author.schema';
-import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [CqrsModule, AuthorChannelsModule, MongooseModule.forFeature([{ name: 'Author', schema: AuthorSchema }])],

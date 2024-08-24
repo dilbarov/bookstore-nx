@@ -2,9 +2,9 @@ import { IBook, IBookQuery } from '@bookstore-nx/entities';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 
-import { BookRepository } from './book.repository';
 import { BookAggregate } from '../domain/book.aggregate';
 import { IBookDocument } from '../schemas/book.schema';
+import { BookRepository } from './book.repository';
 
 export class BookAdapter implements BookRepository {
   public constructor(@InjectModel('Book') private readonly bookModel: Model<IBookDocument>) {}
@@ -34,21 +34,19 @@ export class BookAdapter implements BookRepository {
       whereOptions.author = { $in: authors };
     }
 
-    const qb = this.bookModel.find(whereOptions).populate('author');
+    const books = await this.bookModel
+      .find(
+        whereOptions,
+        {},
+        {
+          skip,
+          limit: take,
+          sort: orderBy && { [orderBy]: sortOrder },
+        },
+      )
+      .populate('author')
+      .exec();
 
-    if (take) {
-      qb.limit(take);
-    }
-
-    if (skip) {
-      qb.skip(skip);
-    }
-
-    if (orderBy) {
-      qb.sort({ [orderBy]: sortOrder });
-    }
-
-    const books = await qb.exec();
     const count = await this.bookModel.countDocuments(whereOptions).exec();
     return [books.map(book => this.toAggregate(book)), count];
   }

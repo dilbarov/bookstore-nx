@@ -17,4 +17,6 @@ export class BaseModel implements IBase {
   @Field(() => String)
   @IsDate()
   public updatedAt: Date = new Date();
+
+  public constructor() {}
 }

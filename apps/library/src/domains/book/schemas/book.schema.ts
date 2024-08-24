@@ -1,4 +1,5 @@
-import { Document, Schema, Types } from 'mongoose';
+import { Document, Schema } from 'mongoose';
+
 import { IAuthorDocument } from '../../author/schemas/author.schema';
 
 export interface IBookDocument extends Document {

@@ -1,11 +1,11 @@
 import { IAuthor, IAuthorQuery } from '@bookstore-nx/entities';
 import { Injectable } from '@nestjs/common';
-
-import { AuthorRepository } from './author.repository';
-import { AuthorAggregate } from '../domain/author.aggregate';
-import { IAuthorDocument } from '../schemas/author.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
+import { AuthorAggregate } from '../domain/author.aggregate';
+import { IAuthorDocument } from '../schemas/author.schema';
+import { AuthorRepository } from './author.repository';
 
 @Injectable()
 export class AuthorAdapter implements AuthorRepository {
@@ -25,21 +25,17 @@ export class AuthorAdapter implements AuthorRepository {
       $or: [{ $and: [{ firstName: regex }, { lastName: regex }] }],
     };
 
-    const qb = this.authorModel.find(whereOptions);
-
-    if (take) {
-      qb.limit(take);
-    }
-
-    if (skip) {
-      qb.skip(skip);
-    }
-
-    if (orderBy) {
-      qb.sort({ [orderBy]: sortOrder });
-    }
-
-    const authors = await qb.exec();
+    const authors = await this.authorModel
+      .find(
+        whereOptions,
+        {},
+        {
+          skip,
+          limit: take,
+          sort: orderBy && { [orderBy]: sortOrder },
+        },
+      )
+      .exec();
     const count = await this.authorModel.countDocuments(whereOptions).exec();
     return [authors.map(book => this.toAggregate(book)), count];
   }
