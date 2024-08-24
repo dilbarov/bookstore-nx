@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 
 import { AuthorAggregate } from '../domain/author.aggregate';
-import { CreateAuthorCommand, CreateAuthorCommandHandler } from './commands';
-import { GetAuthorByIdQuery, GetAuthorByIdQueryHandler, GetAuthorsQuery, GetAuthorsQueryHandler } from './queries';
+import { CreateAuthorCommand } from './commands';
+import { GetAuthorByIdQuery, GetAuthorsQuery } from './queries';
 
 @Injectable()
 export class AuthorFacade implements IBaseFacade {
@@ -28,21 +28,14 @@ export class AuthorFacade implements IBaseFacade {
 
   private async createAuthor(author: CreateAuthorDto): Promise<AuthorAggregate> {
     const dto = new CreateAuthorDto(author);
-    return await this.commandBus.execute<
-      CreateAuthorCommand,
-      Awaited<ReturnType<CreateAuthorCommandHandler['execute']>>
-    >(new CreateAuthorCommand(dto));
+    return await this.commandBus.execute(new CreateAuthorCommand(dto));
   }
 
   private async getAuthorById(id: string): Promise<AuthorAggregate> {
-    return await this.queryBus.execute<GetAuthorByIdQuery, Awaited<ReturnType<GetAuthorByIdQueryHandler['execute']>>>(
-      new GetAuthorByIdQuery(id),
-    );
+    return await this.queryBus.execute(new GetAuthorByIdQuery(id));
   }
 
   private async getAuthors(query: IAuthorQuery): Promise<[AuthorAggregate[], number]> {
-    return await this.queryBus.execute<GetAuthorsQuery, Awaited<ReturnType<GetAuthorsQueryHandler['execute']>>>(
-      new GetAuthorsQuery(query),
-    );
+    return await this.queryBus.execute(new GetAuthorsQuery(query));
   }
 }

@@ -1,11 +1,11 @@
-import { CreateBookDto, IBookQuery } from '@bookstore-nx/entities';
+import { CreateBookDto, IBookQuery, UpdateBookDto } from '@bookstore-nx/entities';
 import { IBaseFacade } from '@bookstore-nx/microservices';
 import { Injectable } from '@nestjs/common';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 
 import { BookAggregate } from '../domain/book.aggregate';
-import { CreateBookCommand, CreateBookCommandHandler } from './commands';
-import { GetBookByIdQuery, GetBookByIdQueryHandler, GetBooksQuery, GetBooksQueryHandler } from './queries';
+import { CreateBookCommand, UpdateBookCommand } from './commands';
+import { GetBookByIdQuery, GetBooksQuery } from './queries';
 
 @Injectable()
 export class BookFacade implements IBaseFacade {
@@ -17,6 +17,7 @@ export class BookFacade implements IBaseFacade {
 
   public commands = {
     createBook: (book: CreateBookDto) => this.createBook(book),
+    updateBook: (book: UpdateBookDto) => this.updateBook(book),
   };
 
   public queries = {
@@ -28,20 +29,19 @@ export class BookFacade implements IBaseFacade {
 
   private createBook(book: CreateBookDto): Promise<BookAggregate> {
     const dto = new CreateBookDto(book);
-    return this.commandBus.execute<CreateBookCommand, Awaited<ReturnType<CreateBookCommandHandler['execute']>>>(
-      new CreateBookCommand(dto),
-    );
+    return this.commandBus.execute(new CreateBookCommand(dto));
+  }
+
+  private async updateBook(book: UpdateBookDto): Promise<BookAggregate> {
+    const dto = new UpdateBookDto(book);
+    return await this.commandBus.execute(new UpdateBookCommand(dto));
   }
 
   private async getBookById(id: string): Promise<BookAggregate> {
-    return await this.queryBus.execute<GetBookByIdQuery, Awaited<ReturnType<GetBookByIdQueryHandler['execute']>>>(
-      new GetBookByIdQuery(id),
-    );
+    return await this.queryBus.execute(new GetBookByIdQuery(id));
   }
 
   private async getBooks(query: IBookQuery): Promise<[BookAggregate[], number]> {
-    return await this.queryBus.execute<GetBooksQuery, Awaited<ReturnType<GetBooksQueryHandler['execute']>>>(
-      new GetBooksQuery(query),
-    );
+    return await this.queryBus.execute(new GetBooksQuery(query));
   }
 }

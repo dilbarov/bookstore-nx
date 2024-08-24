@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 
 import { UserAggregate } from '../domain/user.aggregate';
-import { CreateUserCommand, CreateUserCommandHandler } from './commands';
-import { GetUserByEmailQuery, GetUserByEmailQueryHandler, GetUserByIdQuery, GetUserByIdQueryHandler } from './queries';
+import { CreateUserCommand } from './commands';
+import { GetUserByEmailQuery, GetUserByIdQuery } from './queries';
 
 @Injectable()
 export class UserFacade implements IBaseFacade {
@@ -28,20 +28,14 @@ export class UserFacade implements IBaseFacade {
 
   private async createUser(user: CreateUserDto): Promise<UserAggregate> {
     const dto = new CreateUserDto(user);
-    return await this.commandBus.execute<CreateUserCommand, Awaited<ReturnType<CreateUserCommandHandler['execute']>>>(
-      new CreateUserCommand(dto),
-    );
+    return await this.commandBus.execute(new CreateUserCommand(dto));
   }
 
   private async getUserById(userId: string): Promise<UserAggregate> {
-    return await this.queryBus.execute<GetUserByIdQuery, Awaited<ReturnType<GetUserByIdQueryHandler['execute']>>>(
-      new GetUserByIdQuery(userId),
-    );
+    return await this.queryBus.execute(new GetUserByIdQuery(userId));
   }
 
   private async getUserByEmail(email: string): Promise<UserAggregate> {
-    return await this.queryBus.execute<GetUserByEmailQuery, Awaited<ReturnType<GetUserByEmailQueryHandler['execute']>>>(
-      new GetUserByEmailQuery(email),
-    );
+    return await this.queryBus.execute(new GetUserByEmailQuery(email));
   }
 }

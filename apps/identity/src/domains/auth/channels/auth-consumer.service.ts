@@ -20,7 +20,7 @@ export class AuthConsumerService {
     queue: LoginContract.queue.queue,
   })
   public async login(request: LoginContract.request): Promise<LoginContract.response> {
-    return await execute<LoginContract.request['payload'], LoginContract.response['payload']>(
+    return await execute<LoginContract.request, LoginContract.response>(
       request,
       async payload => await this.authFacade.commands.login(payload),
     );
@@ -32,7 +32,7 @@ export class AuthConsumerService {
     queue: RegisterContract.queue.queue,
   })
   public async register(request: RegisterContract.request): Promise<RegisterContract.response> {
-    return await execute<RegisterContract.request['payload'], RegisterContract.response['payload']>(
+    return await execute<RegisterContract.request, RegisterContract.response>(
       request,
       async payload => await this.authFacade.commands.register(payload),
     );
@@ -44,7 +44,7 @@ export class AuthConsumerService {
     queue: LogoutContract.queue.queue,
   })
   public async logout(request: LogoutContract.request): Promise<LogoutContract.response> {
-    return await execute<LogoutContract.request['payload'], LogoutContract.response['payload']>(
+    return await execute<LogoutContract.request, LogoutContract.response>(
       request,
       async payload => await this.authFacade.commands.logout(payload),
     );
@@ -56,7 +56,7 @@ export class AuthConsumerService {
     queue: RefreshTokensContract.queue.queue,
   })
   public async refreshTokens(request: RefreshTokensContract.request): Promise<RefreshTokensContract.response> {
-    return await execute<RefreshTokensContract.request['payload'], RefreshTokensContract.response['payload']>(
+    return await execute<RefreshTokensContract.request, RefreshTokensContract.response>(
       request,
       async payload => await this.authFacade.commands.refreshTokens(payload),
     );

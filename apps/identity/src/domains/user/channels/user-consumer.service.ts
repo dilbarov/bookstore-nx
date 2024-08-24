@@ -14,7 +14,7 @@ export class UserConsumerService {
     queue: CreateUserContract.queue.queue,
   })
   public async createUser(request: CreateUserContract.request): Promise<CreateUserContract.response> {
-    return await execute<CreateUserContract.request['payload'], CreateUserContract.response['payload']>(
+    return await execute<CreateUserContract.request, CreateUserContract.response>(
       request,
       async user => await this.userFacade.commands.createUser(user),
     );
@@ -26,7 +26,7 @@ export class UserConsumerService {
     queue: GetUserByIdContract.queue.queue,
   })
   public async getUserById(request: GetUserByIdContract.request): Promise<GetUserByIdContract.response> {
-    return await execute<GetUserByIdContract.request['payload'], GetUserByIdContract.response['payload']>(
+    return await execute<GetUserByIdContract.request, GetUserByIdContract.response>(
       request,
       async userId => await this.userFacade.queries.getUserById(userId),
     );
@@ -38,7 +38,7 @@ export class UserConsumerService {
     queue: GetUserByEmailContract.queue.queue,
   })
   public async getUserByEmail(request: GetUserByEmailContract.request): Promise<GetUserByEmailContract.response> {
-    return await execute<GetUserByEmailContract.request['payload'], GetUserByEmailContract.response['payload']>(
+    return await execute<GetUserByEmailContract.request, GetUserByEmailContract.response>(
       request,
       async email => await this.userFacade.queries.getUserByEmail(email),
     );

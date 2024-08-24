@@ -1,10 +1,10 @@
 import { AmqpBaseRequest, AmqpBaseResponse } from '../contracts';
 import { MicroserviceBaseError } from '../errors';
 
-export const execute = async <TArg, TResult>(
-  request: AmqpBaseRequest<TArg>,
-  callback: (arg: TArg | null) => Promise<TResult>,
-): Promise<AmqpBaseResponse<TResult>> => {
+export const execute = async <TRequest extends AmqpBaseRequest, TResponse extends AmqpBaseResponse>(
+  request: TRequest,
+  callback: (arg: TRequest['payload']) => Promise<TResponse['payload']>,
+) => {
   const { payload: arg, ...rest } = request;
   try {
     const result = await callback(arg);
