@@ -1,9 +1,10 @@
-import { BaseModel, IBook } from '@bookstore-nx/entities';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 
-import { AuthorModel } from '../author/author.model';
+import { AuthorModel } from '../author';
+import { BaseModel } from '../base';
+import { IBook } from '../../interfaces';
 
 @ObjectType()
 export class BookModel extends BaseModel implements IBook {
@@ -17,18 +18,13 @@ export class BookModel extends BaseModel implements IBook {
   @IsNotEmpty()
   public description: string;
 
-  @Field(() => String)
-  @IsDate()
-  @IsNotEmpty()
-  public publicationDate: Date;
-
   @Field()
   @IsString()
   @IsNotEmpty()
   public language: string;
 
   @Field(() => AuthorModel)
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @Type(() => AuthorModel)
   public author: AuthorModel;
 

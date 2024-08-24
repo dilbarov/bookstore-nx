@@ -23,7 +23,7 @@ const bootstrap = async (): Promise<void> => {
   });
 
   await app.listen();
-  Logger.log(`🚀 Application [BOOKS] is running`);
+  Logger.log(`🚀 Application [LIBRARY] is running`);
 
   if (module.hot) {
     module.hot.accept();

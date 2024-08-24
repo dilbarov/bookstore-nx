@@ -13,12 +13,12 @@ import {
 export class AmqpService {
   public constructor(private readonly amqpConnection: AmqpConnection) {}
 
-  public async request<TPayload, TResponse>(
+  public async request<TRequest extends AmqpBaseRequest, TResponse extends AmqpBaseResponse>(
     queue: QueueDeclaration,
-    payload: TPayload,
+    payload: TRequest['payload'],
     options?: AdditionalQueueOptions,
-  ): Promise<TResponse | null> {
-    const enrichedPayload = this.enrichPayload(queue, payload, options);
+  ): Promise<TResponse['payload'] | null> {
+    const enrichedPayload = this.enrichPayload<TRequest['payload']>(queue, payload, options);
     const result = await this.amqpConnection.request<AmqpBaseResponse<TResponse>>({
       exchange: queue.exchange.name,
       routingKey: queue.routingKey,
@@ -32,12 +32,12 @@ export class AmqpService {
     return result.payload;
   }
 
-  public async publish<TPayload>(
+  public async publish<TRequest extends AmqpBaseRequest>(
     queue: QueueDeclaration,
-    payload: TPayload,
+    payload: TRequest['payload'],
     options?: AdditionalQueueOptions,
   ): Promise<void> {
-    const enrichedPayload = this.enrichPayload(queue, payload, options);
+    const enrichedPayload = this.enrichPayload<TRequest['payload']>(queue, payload, options);
 
     await this.amqpConnection.publish(queue.exchange.name, queue.routingKey, enrichedPayload);
   }

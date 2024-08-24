@@ -10,6 +10,6 @@ export class CreateAuthorCommandHandler implements ICommandHandler<CreateAuthorC
 
   public async execute({ author }: CreateAuthorCommand): Promise<AuthorAggregate> {
     const _author = AuthorAggregate.create(author);
-    return await this.authorRepository.create(_author);
+    return await this.authorRepository.create(author);
   }
 }

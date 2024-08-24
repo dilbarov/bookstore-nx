@@ -7,7 +7,9 @@ export abstract class BookRepository {
 
   public abstract findById(id: string): Promise<BookAggregate | null>;
 
-  public abstract create(book: IBook): Promise<BookAggregate>;
+  public abstract create(
+    book: Pick<IBook, 'title' | 'description' | 'language'> & { authorId: string },
+  ): Promise<BookAggregate>;
 
   public abstract save(book: IBook): Promise<BookAggregate>;
 

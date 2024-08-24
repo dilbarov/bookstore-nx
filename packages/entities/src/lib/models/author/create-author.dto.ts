@@ -1,10 +1,19 @@
-import { PickType } from '@nestjs/graphql';
-import { AuthorModel } from './author.model';
+import { Field, InputType } from '@nestjs/graphql';
 import { filterFields } from '@bookstore-nx/microservices';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateAuthorDto extends PickType(AuthorModel, ['firstName', 'lastName'] as const) {
-  public constructor(partial: Partial<CreateAuthorDto>) {
-    super();
+@InputType()
+export class CreateAuthorDto {
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  public firstName: string;
+
+  @Field()
+  @IsString()
+  public lastName: string;
+
+  public constructor(partial: Partial<CreateAuthorDto> = {}) {
     Object.assign(this, filterFields<CreateAuthorDto>(partial, ['firstName', 'lastName']));
   }
 }

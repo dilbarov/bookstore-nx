@@ -1,20 +1,34 @@
-import { Field, ObjectType, PickType } from '@nestjs/graphql';
-import { BookModel } from './book.model';
-import { IsNotEmpty, IsUUID } from 'class-validator';
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { filterFields } from '@bookstore-nx/microservices';
 
-@ObjectType()
-export class UpdateBookDto extends PickType(BookModel, ['id', 'title', 'description', 'language', 'publicationDate']) {
+@InputType()
+export class UpdateBookDto {
+  @Field(() => ID)
+  @IsUUID()
+  public id: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  public title: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  public description: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  public language: string;
+
   @Field()
   @IsUUID()
   @IsNotEmpty()
   public authorId: string;
 
   public constructor(partial: Partial<UpdateBookDto> = {}) {
-    super();
-    Object.assign(
-      this,
-      filterFields<UpdateBookDto>(partial, ['id', 'title', 'description', 'language', 'publicationDate', 'authorId']),
-    );
+    Object.assign(this, filterFields<UpdateBookDto>(partial, ['id', 'title', 'description', 'language', 'authorId']));
   }
 }

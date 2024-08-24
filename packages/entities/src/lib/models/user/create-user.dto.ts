@@ -1,8 +1,9 @@
 import { filterFields } from '@bookstore-nx/microservices';
-import { PickType } from '@nestjs/graphql';
+import { InputType, PickType } from '@nestjs/graphql';
 
 import { UserModel } from './user.model';
 
+@InputType()
 export class CreateUserDto extends PickType(UserModel, ['email', 'password']) {
   public constructor(partial: Partial<CreateUserDto> = {}) {
     super();

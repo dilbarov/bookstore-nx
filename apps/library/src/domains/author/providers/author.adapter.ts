@@ -4,12 +4,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { AuthorAggregate } from '../domain/author.aggregate';
-import { IAuthorDocument } from '../schemas/author.schema';
+import { AUTHOR_MODEL_NAME, IAuthorDocument } from '../schemas/author.schema';
 import { AuthorRepository } from './author.repository';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class AuthorAdapter implements AuthorRepository {
-  public constructor(@InjectModel('Author') private readonly authorModel: Model<IAuthorDocument>) {}
+  public constructor(@InjectModel(AUTHOR_MODEL_NAME) private readonly authorModel: Model<IAuthorDocument>) {}
 
   public async findAll({
     search,
@@ -22,7 +23,16 @@ export class AuthorAdapter implements AuthorRepository {
     const sortOrder = orderDirection === 'desc' ? -1 : 1;
 
     const whereOptions = {
-      $or: [{ $and: [{ firstName: regex }, { lastName: regex }] }],
+      $or: [
+        { firstName: regex },
+        { lastName: regex },
+        {
+          $expr: { $regexMatch: { input: { $concat: ['$firstName', ' ', '$lastName'] }, regex: search, options: 'i' } },
+        },
+        {
+          $expr: { $regexMatch: { input: { $concat: ['$lastName', ' ', '$firstName'] }, regex: search, options: 'i' } },
+        },
+      ],
     };
 
     const authors = await this.authorModel
@@ -45,14 +55,14 @@ export class AuthorAdapter implements AuthorRepository {
     return author ? this.toAggregate(author) : null;
   }
 
-  public async create(author: IAuthor): Promise<AuthorAggregate> {
+  public async create(author: Pick<IAuthor, 'lastName' | 'firstName'>): Promise<AuthorAggregate> {
     const createdAuthor = new this.authorModel(author);
     const result = await createdAuthor.save();
     return this.toAggregate(result);
   }
 
   public async save(author: IAuthor): Promise<AuthorAggregate> {
-    const createdAuthor = new this.authorModel(author);
+    const createdAuthor = new this.authorModel({ ...author, id: v4() });
     const result = await createdAuthor.save();
     return this.toAggregate(result);
   }
@@ -64,7 +74,7 @@ export class AuthorAdapter implements AuthorRepository {
 
   private toAggregate(authorDoc: IAuthorDocument): AuthorAggregate {
     return AuthorAggregate.create({
-      id: authorDoc.id,
+      id: authorDoc._id,
       firstName: authorDoc.firstName,
       lastName: authorDoc.lastName,
       createdAt: authorDoc.createdAt,

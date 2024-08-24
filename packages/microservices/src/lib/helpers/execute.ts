@@ -13,6 +13,7 @@ export const execute = async <TRequest extends AmqpBaseRequest, TResponse extend
       payload: result,
     };
   } catch (error) {
+    console.error(error);
     const _error = error as MicroserviceBaseError;
     return {
       ...rest,

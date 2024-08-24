@@ -1,7 +1,7 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { IUser, UserModel } from '@bookstore-nx/entities';
 import { AmqpService, GetUserByEmailContract, GetUserByIdContract } from '@bookstore-nx/microservices';
-import { CurrentUserId } from '../../decorators/current-user-id.decorator';
+import { CurrentUserId } from '../../shared/decorators/current-user-id.decorator';
 
 @Resolver(() => UserModel)
 export class UserResolver {
@@ -9,25 +9,25 @@ export class UserResolver {
 
   @Query(() => UserModel)
   public async getCurrentUser(@CurrentUserId() id: string): Promise<IUser> {
-    return await this.amqpService.request<
-      GetUserByIdContract.request['payload'],
-      GetUserByIdContract.response['payload']
-    >(GetUserByIdContract.queue, id);
+    return await this.amqpService.request<GetUserByIdContract.request, GetUserByIdContract.response>(
+      GetUserByIdContract.queue,
+      id,
+    );
   }
 
   @Query(() => UserModel)
   public async getUserById(@Args('id', { type: () => String }) id: string): Promise<IUser> {
-    return await this.amqpService.request<
-      GetUserByIdContract.request['payload'],
-      GetUserByIdContract.response['payload']
-    >(GetUserByIdContract.queue, id);
+    return await this.amqpService.request<GetUserByIdContract.request, GetUserByIdContract.response>(
+      GetUserByIdContract.queue,
+      id,
+    );
   }
 
   @Query(() => UserModel)
   public async getUserByEmail(@Args('email', { type: () => String }) email: string): Promise<IUser> {
-    return await this.amqpService.request<
-      GetUserByEmailContract.request['payload'],
-      GetUserByEmailContract.response['payload']
-    >(GetUserByEmailContract.queue, email);
+    return await this.amqpService.request<GetUserByEmailContract.request, GetUserByEmailContract.response>(
+      GetUserByEmailContract.queue,
+      email,
+    );
   }
 }

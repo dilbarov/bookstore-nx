@@ -13,6 +13,7 @@ export class AuthorConsumerService {
     queue: CreateAuthorContract.queue.queue,
   })
   public async createAuthor(request: CreateAuthorContract.request): Promise<CreateAuthorContract.response> {
+    console.log(`consumer`);
     return await execute<CreateAuthorContract.request, CreateAuthorContract.response>(
       request,
       async payload => await this.authorFacade.commands.createAuthor(payload),

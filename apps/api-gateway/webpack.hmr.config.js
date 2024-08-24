@@ -14,7 +14,7 @@ module.exports = composePlugins(withNx({ skipTypeChecking }), config => {
       nodeExternals({
         main: './src/main.ts',
         tsConfig: './tsconfig.app.json',
-        assets: ['apps/books/src/assets'],
+        assets: ['apps/api-gateway/src/assets'],
         optimization: false,
         outputHashing: 'none',
         allowlist: ['webpack/hot/poll?100'],

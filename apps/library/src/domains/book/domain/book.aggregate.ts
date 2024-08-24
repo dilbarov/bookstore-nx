@@ -15,7 +15,6 @@ export class BookAggregate extends BookModel {
 
     _book.author = _author;
     _book.language = book.language ? book.language.trim().toLowerCase() : '';
-    _book.publicationDate = book.publicationDate ? new Date(book.publicationDate) : new Date();
     _book.createdAt = book.createdAt ? new Date(book.createdAt) : new Date();
     _book.updatedAt = book.updatedAt ? new Date(book.updatedAt) : new Date();
 

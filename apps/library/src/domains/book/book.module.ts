@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Global, Module, OnModuleInit } from '@nestjs/common';
 import { CommandBus, CqrsModule, EventBus, QueryBus } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -12,10 +12,22 @@ import { BookChannelsModule } from './channels/book-channels.module';
 import { BookAdapter } from './providers/book.adapter';
 import { BookRepository } from './providers/book.repository';
 import { bookFacadeFactory } from './providers/book-facade.factory';
-import { BookSchema } from './schemas/book.schema';
+import { BOOK_MODEL_NAME, BookSchema } from './schemas/book.schema';
+import { AUTHOR_MODEL_NAME, AuthorSchema } from '../author/schemas/author.schema';
 
+@Global()
 @Module({
-  imports: [CqrsModule, BookChannelsModule, MongooseModule.forFeature([{ name: 'Book', schema: BookSchema }])],
+  imports: [
+    CqrsModule,
+    BookChannelsModule,
+    MongooseModule.forFeature([
+      { name: BOOK_MODEL_NAME, schema: BookSchema },
+      {
+        name: AUTHOR_MODEL_NAME,
+        schema: AuthorSchema,
+      },
+    ]),
+  ],
   providers: [
     {
       provide: BookRepository,

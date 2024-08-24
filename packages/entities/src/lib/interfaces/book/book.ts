@@ -5,6 +5,5 @@ export interface IBook extends IBase {
   title: string;
   description: string;
   language: string;
-  publicationDate: Date;
   author: IAuthor;
 }
