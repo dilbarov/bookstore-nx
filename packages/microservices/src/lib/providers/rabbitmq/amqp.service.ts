@@ -1,13 +1,9 @@
-import { Injectable } from '@nestjs/common';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { Injectable } from '@nestjs/common';
+import { GraphQLError } from 'graphql';
 import { v4 } from 'uuid';
-import {
-  AdditionalQueueOptions,
-  AmqpBaseRequest,
-  AmqpBaseResponse,
-  MicroserviceBaseError,
-  QueueDeclaration,
-} from '@bookstore-nx/microservices';
+
+import { AdditionalQueueOptions, AmqpBaseRequest, AmqpBaseResponse, QueueDeclaration } from '../../contracts';
 
 @Injectable()
 export class AmqpService {
@@ -26,7 +22,13 @@ export class AmqpService {
     });
 
     if (result.error) {
-      throw new MicroserviceBaseError(result.error.code, result.error.message, result.error.statusCode);
+      throw new GraphQLError(result.error.message, {
+        extensions: {
+          code: result.error.code,
+          message: result.error.message,
+          statusCode: result.error.statusCode,
+        },
+      });
     }
 
     return result.payload;

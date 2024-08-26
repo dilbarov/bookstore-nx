@@ -58,14 +58,3 @@ services:
     ports:
       - "${AMQP_PORT:-55672}:5672"
       - "${RABBITMQ_MANAGEMENT_PORT:-55673}:15672"
-  search_elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.1
-    restart: always
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-    volumes:
-      - ./volumes/search_elasticsearch:/usr/share/elasticsearch/data
-    ports:
-      - "${SEARCH_ELASTICSEARCH_PORT:-59200}:9200"

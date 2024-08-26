@@ -5,10 +5,9 @@ import { Response } from 'express';
 
 @Catch(MicroserviceBaseError)
 export class MicroserviceExceptionFilter implements GqlExceptionFilter {
-  catch(exception: MicroserviceBaseError, host: ArgumentsHost) {
+  public catch(exception: MicroserviceBaseError, host: ArgumentsHost): void {
     const gqlHost = GqlArgumentsHost.create(host);
     const response = gqlHost.getContext().res as Response;
-    console.log(exception);
     const status = exception.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
     const errorResponse = {
       statusCode: status,

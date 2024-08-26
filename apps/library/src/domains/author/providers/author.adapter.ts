@@ -2,11 +2,11 @@ import { IAuthor, IAuthorQuery } from '@bookstore-nx/entities';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { v4 } from 'uuid';
 
 import { AuthorAggregate } from '../domain/author.aggregate';
 import { AUTHOR_MODEL_NAME, IAuthorDocument } from '../schemas/author.schema';
 import { AuthorRepository } from './author.repository';
-import { v4 } from 'uuid';
 
 @Injectable()
 export class AuthorAdapter implements AuthorRepository {
@@ -23,16 +23,7 @@ export class AuthorAdapter implements AuthorRepository {
     const sortOrder = orderDirection === 'desc' ? -1 : 1;
 
     const whereOptions = {
-      $or: [
-        { firstName: regex },
-        { lastName: regex },
-        {
-          $expr: { $regexMatch: { input: { $concat: ['$firstName', ' ', '$lastName'] }, regex: search, options: 'i' } },
-        },
-        {
-          $expr: { $regexMatch: { input: { $concat: ['$lastName', ' ', '$firstName'] }, regex: search, options: 'i' } },
-        },
-      ],
+      $or: [{ name: regex }],
     };
 
     const authors = await this.authorModel
@@ -55,7 +46,7 @@ export class AuthorAdapter implements AuthorRepository {
     return author ? this.toAggregate(author) : null;
   }
 
-  public async create(author: Pick<IAuthor, 'lastName' | 'firstName'>): Promise<AuthorAggregate> {
+  public async create(author: Pick<IAuthor, 'name'>): Promise<AuthorAggregate> {
     const createdAuthor = new this.authorModel(author);
     const result = await createdAuthor.save();
     return this.toAggregate(result);
@@ -75,8 +66,7 @@ export class AuthorAdapter implements AuthorRepository {
   private toAggregate(authorDoc: IAuthorDocument): AuthorAggregate {
     return AuthorAggregate.create({
       id: authorDoc._id,
-      firstName: authorDoc.firstName,
-      lastName: authorDoc.lastName,
+      name: authorDoc.name,
       createdAt: authorDoc.createdAt,
       updatedAt: authorDoc.updatedAt,
     });

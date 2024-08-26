@@ -30,8 +30,6 @@ export class BookResolver {
     return await this.bookService.getBooks(query);
   }
 
-  // TODO: Remove
-  @Public()
   @Mutation(() => BookModel)
   public async createBook(@Args('book', { type: () => CreateBookDto }) book: CreateBookDto): Promise<IBook> {
     return await this.bookService.createBook(book);

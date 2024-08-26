@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl, ValidateNested } from 'class-validator';
 
 import { AuthorModel } from '../author';
 import { BaseModel } from '../base';
@@ -22,6 +22,16 @@ export class BookModel extends BaseModel implements IBook {
   @IsString()
   @IsNotEmpty()
   public language: string;
+
+  @Field()
+  @IsNotEmpty()
+  @IsNumber()
+  public rating: number;
+
+  @Field()
+  @IsUrl()
+  @IsOptional()
+  public url?: string;
 
   @Field(() => AuthorModel)
   @ValidateNested({ each: true })

@@ -1,0 +1,103 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthorModel {
+  createdAt: String!
+  id: ID!
+  name: String!
+  updatedAt: String!
+}
+
+input AuthorQueryInput {
+  orderBy: String
+  orderDirection: String
+  search: String
+  skip: Int
+  take: Int
+}
+
+type AuthorsResponse {
+  count: Int!
+  items: [AuthorModel!]!
+}
+
+type BookModel {
+  author: AuthorModel!
+  createdAt: String!
+  description: String!
+  id: ID!
+  language: String!
+  rating: Float!
+  title: String!
+  updatedAt: String!
+  url: String!
+}
+
+input BookQueryInput {
+  authors: [String!]
+  orderBy: String
+  orderDirection: String
+  search: String
+  skip: Int
+  take: Int
+}
+
+type BooksResponse {
+  count: Int!
+  items: [BookModel!]!
+}
+
+input CreateAuthorDto {
+  name: String!
+}
+
+input CreateBookDto {
+  authorId: String!
+  description: String!
+  language: String!
+  title: String!
+  url: String!
+}
+
+type Mutation {
+  createAuthor(author: CreateAuthorDto!): AuthorModel!
+  createBook(book: CreateBookDto!): BookModel!
+  login(email: String!, fingerprint: String!, password: String!): TokensDto!
+  logout(fingerprint: String!): Boolean!
+  refreshTokens(fingerprint: String!, refreshToken: String!): TokensDto!
+  register(email: String!, fingerprint: String!, password: String!): TokensDto!
+  updateBook(book: UpdateBookDto!): BookModel!
+}
+
+type Query {
+  getAuthorById(id: String!): AuthorModel!
+  getAuthors(query: AuthorQueryInput!): AuthorsResponse!
+  getBookById(id: String!): BookModel!
+  getBooks(query: BookQueryInput!): BooksResponse!
+  getCurrentUser: UserModel!
+  getUserByEmail(email: String!): UserModel!
+  getUserById(id: String!): UserModel!
+}
+
+type TokensDto {
+  accessToken: String!
+  refreshToken: String!
+}
+
+input UpdateBookDto {
+  authorId: String!
+  description: String!
+  id: ID!
+  language: String!
+  title: String!
+  url: String!
+}
+
+type UserModel {
+  createdAt: String!
+  email: String!
+  id: ID!
+  password: String!
+  updatedAt: String!
+}

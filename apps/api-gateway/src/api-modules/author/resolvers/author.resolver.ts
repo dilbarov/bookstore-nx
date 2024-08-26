@@ -1,4 +1,3 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   AuthorModel,
   AuthorQueryInput,
@@ -7,6 +6,8 @@ import {
   IAuthor,
   IBaseResponse,
 } from '@bookstore-nx/entities';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+
 import { Public } from '../../../shared/decorators/public.decorator';
 import { AuthorService } from '../services/author.service';
 

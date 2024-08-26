@@ -1,12 +1,12 @@
+import { Any } from '@bookstore-nx/common';
 import { ClassSerializerInterceptor, Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app/app.module';
-import { JwtAuthGuard } from './shared/guards/jwt.guard';
 import { MicroserviceExceptionFilter } from './shared/exception-filters/microservice.exception-filter';
-import { Any } from '@bookstore-nx/common';
+import { JwtAuthGuard } from './shared/guards/jwt.guard';
 
 declare const module: Any;
 
@@ -36,6 +36,8 @@ const bootstrap = async (): Promise<void> => {
       },
     }),
   );
+
+  app.enableCors();
 
   const port = configService.get('API_GATEWAY_PORT');
   await app.listen(port);

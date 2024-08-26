@@ -4,7 +4,7 @@ import { AmqpBaseRequest, AmqpBaseResponse, QueueDeclaration } from '../../../..
 import { EXCHANGE_AUTHOR } from '../../exchanges';
 import { QUEUE_LIBRARY_OPTIONS } from '../queue.options';
 
-type AuthorCreateRequest = Pick<IAuthor, 'firstName' | 'lastName'>;
+type AuthorCreateRequest = Pick<IAuthor, 'name'>;
 
 export namespace CreateAuthorContract {
   export const queue: QueueDeclaration = {

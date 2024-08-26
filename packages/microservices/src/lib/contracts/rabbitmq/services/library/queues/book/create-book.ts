@@ -4,7 +4,7 @@ import { AmqpBaseRequest, AmqpBaseResponse, QueueDeclaration } from '../../../..
 import { EXCHANGE_BOOK } from '../../exchanges';
 import { QUEUE_LIBRARY_OPTIONS } from '../queue.options';
 
-type BookCreateRequest = Pick<IBook, 'title' | 'description' | 'language'> & { authorId: string };
+type BookCreateRequest = Pick<IBook, 'title' | 'description' | 'language' | 'url'> & { authorId: string };
 
 export namespace CreateBookContract {
   export const queue: QueueDeclaration = {

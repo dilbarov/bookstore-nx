@@ -1,13 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { BookFacade } from '../application-services';
 import {
   CreateBookContract,
   execute,
   GetBookByIdContract,
   GetBooksContract,
+  NotFoundError,
   UpdateBookContract,
 } from '@bookstore-nx/microservices';
 import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
+import { Injectable } from '@nestjs/common';
+
+import { BookFacade } from '../application-services';
 
 @Injectable()
 export class BookConsumerService {
@@ -43,10 +45,15 @@ export class BookConsumerService {
     queue: GetBookByIdContract.queue.queue,
   })
   public async getBookById(request: GetBookByIdContract.request): Promise<GetBookByIdContract.response> {
-    return await execute<GetBookByIdContract.request, GetBookByIdContract.response>(
-      request,
-      async id => await this.bookFacade.queries.getBookById(id),
-    );
+    return await execute<GetBookByIdContract.request, GetBookByIdContract.response>(request, async id => {
+      const book = await this.bookFacade.queries.getBookById(id);
+
+      if (!book) {
+        throw new NotFoundError('Book not found. ID: ' + id);
+      }
+
+      return book;
+    });
   }
 
   @RabbitRPC({

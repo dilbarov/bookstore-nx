@@ -1,0 +1,16 @@
+query GetBooks($query: BookQueryInput!) {
+  getBooks(query: $query) {
+    items {
+      id
+      title
+      language
+      rating
+      url
+      author {
+        id
+        name
+      }
+    }
+    count
+  }
+}

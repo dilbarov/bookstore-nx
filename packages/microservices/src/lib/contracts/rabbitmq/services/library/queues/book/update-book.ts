@@ -4,7 +4,7 @@ import { AmqpBaseRequest, AmqpBaseResponse, QueueDeclaration } from '../../../..
 import { EXCHANGE_BOOK } from '../../exchanges';
 import { QUEUE_LIBRARY_OPTIONS } from '../queue.options';
 
-type BookUpdateRequest = Pick<IBook, 'id' | 'title' | 'description' | 'language'> & {
+type BookUpdateRequest = Pick<IBook, 'id' | 'title' | 'description' | 'language' | 'url'> & {
   authorId: string;
 };
 

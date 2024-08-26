@@ -8,11 +8,7 @@ export class AuthorModel extends BaseModel implements IAuthor {
   @Field()
   @IsString()
   @IsNotEmpty()
-  public firstName: string;
-
-  @Field()
-  @IsString()
-  public lastName: string;
+  public name: string;
 
   public constructor() {
     super();

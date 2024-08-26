@@ -1,0 +1,13 @@
+mutation CreateBook($book: CreateBookDto!) {
+  createBook(book: $book) {
+    id
+    title
+    description
+    language
+    url
+    author {
+      id
+      name
+    }
+  }
+}

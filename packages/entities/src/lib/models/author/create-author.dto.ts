@@ -7,13 +7,9 @@ export class CreateAuthorDto {
   @Field()
   @IsString()
   @IsNotEmpty()
-  public firstName: string;
-
-  @Field()
-  @IsString()
-  public lastName: string;
+  public name: string;
 
   public constructor(partial: Partial<CreateAuthorDto> = {}) {
-    Object.assign(this, filterFields<CreateAuthorDto>(partial, ['firstName', 'lastName']));
+    Object.assign(this, filterFields<CreateAuthorDto>(partial, ['name']));
   }
 }

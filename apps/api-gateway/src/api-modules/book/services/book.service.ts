@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BookModel, BooksResponse, CreateBookDto, IBookQuery, UpdateBookDto } from '@bookstore-nx/entities';
 import {
   AmqpService,
   CreateBookContract,
@@ -6,7 +6,7 @@ import {
   GetBooksContract,
   UpdateBookContract,
 } from '@bookstore-nx/microservices';
-import { BookModel, BooksResponse, CreateBookDto, IBookQuery, UpdateBookDto } from '@bookstore-nx/entities';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class BookService {

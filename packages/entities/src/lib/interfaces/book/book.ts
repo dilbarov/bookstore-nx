@@ -5,5 +5,7 @@ export interface IBook extends IBase {
   title: string;
   description: string;
   language: string;
+  rating: number;
+  url?: string;
   author: IAuthor;
 }

@@ -2,9 +2,10 @@ export class MicroserviceBaseError extends Error {
   public readonly code: string;
   public readonly statusCode: number;
 
-  constructor(code: string, message: string, statusCode: number) {
-    super(message);
+  public constructor(message: string, code: string, statusCode: number) {
+    super(code);
     this.code = code;
+    this.message = message;
     this.statusCode = statusCode;
 
     // Ensure the name of this error is the same as the class name

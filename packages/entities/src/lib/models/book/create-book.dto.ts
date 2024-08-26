@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsDate, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID } from 'class-validator';
 import { filterFields } from '@bookstore-nx/microservices';
 
 @InputType()
@@ -20,11 +20,16 @@ export class CreateBookDto {
   public language: string;
 
   @Field()
+  @IsUrl()
+  @IsOptional()
+  public url?: string;
+
+  @Field()
   @IsUUID()
   @IsNotEmpty()
   public authorId: string;
 
   public constructor(partial: Partial<CreateBookDto> = {}) {
-    Object.assign(this, filterFields<CreateBookDto>(partial, ['title', 'description', 'language', 'authorId']));
+    Object.assign(this, filterFields<CreateBookDto>(partial, ['title', 'description', 'language', 'authorId', 'url']));
   }
 }

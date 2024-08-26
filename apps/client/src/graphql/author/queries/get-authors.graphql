@@ -1,0 +1,9 @@
+query GetAuthors($query: AuthorQueryInput!) {
+  getAuthors(query: $query) {
+    items {
+      id
+      name
+    }
+    count
+  }
+}

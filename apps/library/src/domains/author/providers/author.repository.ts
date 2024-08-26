@@ -7,7 +7,7 @@ export abstract class AuthorRepository {
 
   public abstract findById(id: string): Promise<AuthorAggregate | null>;
 
-  public abstract create(author: Pick<IAuthor, 'lastName' | 'firstName'>): Promise<AuthorAggregate>;
+  public abstract create(author: Pick<IAuthor, 'name'>): Promise<AuthorAggregate>;
 
   public abstract save(author: IAuthor): Promise<AuthorAggregate>;
 

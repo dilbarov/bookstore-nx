@@ -1,13 +1,13 @@
 import { IBook, IBookQuery } from '@bookstore-nx/entities';
+import { NotFoundError } from '@bookstore-nx/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
+import { v4 } from 'uuid';
 
+import { AUTHOR_MODEL_NAME, IAuthorDocument } from '../../author/schemas/author.schema';
 import { BookAggregate } from '../domain/book.aggregate';
 import { BOOK_MODEL_NAME, IBookDocument } from '../schemas/book.schema';
 import { BookRepository } from './book.repository';
-import { v4 } from 'uuid';
-import { AUTHOR_MODEL_NAME, IAuthorDocument } from '../../author/schemas/author.schema';
-import { NotFoundError } from '@bookstore-nx/microservices';
 
 export class BookAdapter implements BookRepository {
   public constructor(
@@ -26,7 +26,7 @@ export class BookAdapter implements BookRepository {
       throw new NotFoundError('Author not found');
     }
 
-    const createdBook = new this.bookModel({ ...other, id: v4(), author: authorId });
+    const createdBook = new this.bookModel({ ...other, id: v4(), author: authorId, rating: 5.0 });
     const result = await createdBook.save();
 
     return await this.findById(result._id);
@@ -89,10 +89,11 @@ export class BookAdapter implements BookRepository {
       title: bookDoc.title,
       description: bookDoc.description,
       language: bookDoc.language,
+      rating: bookDoc.rating,
+      url: bookDoc.url,
       author: {
         id: bookDoc.author._id.toString(),
-        firstName: bookDoc.author.firstName,
-        lastName: bookDoc.author.lastName,
+        name: bookDoc.author.name,
         createdAt: bookDoc.author.createdAt,
         updatedAt: bookDoc.author.updatedAt,
       },
