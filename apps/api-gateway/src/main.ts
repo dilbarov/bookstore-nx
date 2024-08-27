@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import { AppModule } from './app/app.module';
 import { MicroserviceExceptionFilter } from './shared/exception-filters/microservice.exception-filter';
 import { JwtAuthGuard } from './shared/guards/jwt.guard';
+import { JwtService } from '@nestjs/jwt';
 
 declare const module: Any;
 
@@ -15,13 +16,14 @@ const bootstrap = async (): Promise<void> => {
 
   const configService = app.get(ConfigService);
   const reflector = app.get(Reflector);
+  const jwtService = app.get(JwtService);
 
   // Cookie Parser
   app.use(cookieParser());
 
   app.useGlobalFilters(new MicroserviceExceptionFilter());
 
-  app.useGlobalGuards(new JwtAuthGuard(reflector));
+  app.useGlobalGuards(new JwtAuthGuard(reflector, jwtService));
 
   // Validation request data to Type in code
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));

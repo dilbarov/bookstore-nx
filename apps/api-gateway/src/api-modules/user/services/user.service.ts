@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { AmqpService, GetUserByEmailContract, GetUserByIdContract } from '@bookstore-nx/microservices';
 import { UserModel } from '@bookstore-nx/entities';
+import { AmqpService, GetUserByEmailContract, GetUserByIdContract } from '@bookstore-nx/microservices';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserService {

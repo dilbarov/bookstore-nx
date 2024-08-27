@@ -1,0 +1,7 @@
+mutation CreateFavorite($favorite: CreateFavoriteDto!) {
+  createFavorite(favorite: $favorite) {
+    entityId
+    category
+    entityType
+  }
+}

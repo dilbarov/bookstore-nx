@@ -1,0 +1,59 @@
+{
+  "name": "favorites",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/favorites/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/favorites",
+        "main": "apps/favorites/src/main.ts",
+        "tsConfig": "apps/favorites/tsconfig.app.json",
+        "assets": [
+          "apps/favorites/src/assets"
+        ],
+        "isolatedConfig": true
+      },
+      "configurations": {
+        "development": {
+          "webpackConfig": "apps/favorites/webpack.hmr.config.js"
+        },
+        "production": {
+          "webpackConfig": "apps/favorites/webpack.config.js",
+          "generatePackageJson": true
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "favorites:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "favorites:build:development"
+        },
+        "production": {
+          "buildTarget": "favorites:build:production"
+        }
+      }
+    },
+    "migrations:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "set \"TS_NODE_PROJECT=apps/favorites/tsconfig.app.json\" && ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ./apps/favorites/ormconfig.ts migration:generate -o"
+      }
+    }
+  }
+}

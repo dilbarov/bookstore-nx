@@ -1,27 +1,16 @@
-import {
-  Box,
-  Card,
-  DialogContent,
-  Dropdown,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  Skeleton,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/joy';
-import { BookmarkAdd } from '@mui/icons-material';
+import { Box, Card, DialogContent, Skeleton, Stack, Typography, useTheme } from '@mui/joy';
 import { Image } from '../../../../shared/customs/image';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import React from 'react';
 import { useScreen } from '../../../../../hooks/use-screen';
 import { useBook } from '../../hooks/use-book';
+import { useFavorite } from '../../hooks/use-favorite';
+import { FavoriteCategoryButton } from '../../ui/favorite-category-button/favorite-category-button';
 
 export const BookDetails = () => {
   const theme = useTheme();
   const { isMobile } = useScreen();
+  const { createFavorite, updateFavorite, deleteFavorite } = useFavorite();
 
   const { book, loading } = useBook();
 
@@ -33,22 +22,23 @@ export const BookDetails = () => {
             <Typography level={'h2'} sx={{ color: 'white' }}>
               <Skeleton loading={loading}>{book.title}</Skeleton>
             </Typography>
-            <Dropdown>
-              <MenuButton
-                slots={{ root: IconButton }}
-                slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'lg' } }}
-              >
-                <Skeleton loading={loading}>
-                  <BookmarkAdd />
-                </Skeleton>
-              </MenuButton>
-              <Menu variant="plain" placement="bottom-end" sx={{ zIndex: 12000 }} size={'lg'}>
-                <MenuItem>Test 1 sdf s </MenuItem>
-                <MenuItem>Test 2 sdf s </MenuItem>
-                <MenuItem>Test 3 sdf sd </MenuItem>
-                <MenuItem>Test 4 sdf sdf </MenuItem>
-              </Menu>
-            </Dropdown>
+            <FavoriteCategoryButton
+              loading={loading}
+              favoriteCategory={book.favoriteCategory}
+              onChangeFavoriteCategory={category =>
+                updateFavorite({
+                  category,
+                  entityId: book.id,
+                })
+              }
+              onAddToFavorites={category =>
+                createFavorite({
+                  category,
+                  entityId: book.id,
+                })
+              }
+              onRemoveFromFavorites={() => deleteFavorite({ entityId: book.id })}
+            />
           </Stack>
           <Typography level={'body-lg'} sx={{ color: 'white' }}>
             <Skeleton loading={loading}>{book.author.name}</Skeleton>

@@ -1,4 +1,4 @@
-import { filterFields } from '@bookstore-nx/microservices';
+import { filterFields } from '../../helpers/filter-fields';
 import { InputType, PickType } from '@nestjs/graphql';
 
 import { UserModel } from './user.model';

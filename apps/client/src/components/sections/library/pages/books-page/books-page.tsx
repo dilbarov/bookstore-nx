@@ -9,10 +9,12 @@ import { RoutePaths } from '../../../../../router/routes-paths';
 import { FiltersButton } from '../../ui/books-list/filters-button';
 import { FiltersDrawer } from '../../ui/books-list/filters-drawer';
 import { useFilters } from '../../hooks/use-filters';
+import { useFavorite } from '../../hooks/use-favorite';
 
 export const BooksPage: React.FC = () => {
   const { authors, isDefaultFilters, onFiltersChange, filters } = useFilters();
   const { loading, isFirstQuery, items, search, onSearchChange } = useBooks(filters);
+  const { createFavorite, updateFavorite, deleteFavorite } = useFavorite();
 
   const [filtersOpened, setFiltersOpened] = React.useState(false);
 
@@ -58,7 +60,14 @@ export const BooksPage: React.FC = () => {
           />
         </Stack>
       </Box>
-      <BooksList loading={isFirstQuery && loading} items={items} onExplore={handleExplore} />
+      <BooksList
+        loading={isFirstQuery && loading}
+        items={items}
+        onExplore={handleExplore}
+        onAddToFavorites={createFavorite}
+        onRemoveFromFavorites={deleteFavorite}
+        onChangeFavoriteCategory={updateFavorite}
+      />
       <Outlet />
     </Stack>
   );

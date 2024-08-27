@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { filterFields } from '@bookstore-nx/microservices';
+import { filterFields } from '../../helpers/filter-fields';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 @InputType()

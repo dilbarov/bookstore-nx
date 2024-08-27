@@ -40,13 +40,6 @@ services:
       - "127.0.0.1:${IDENTITY_REDIS_PORT:-56379}:6379"
     volumes:
       - ./volumes/identity_redis:/data
-  favorites_redis:
-    restart: always
-    image: redis:7.2.3
-    ports:
-      - "127.0.0.1:${FAVORITES_REDIS_PORT:-56380}:6379"
-    volumes:
-      - ./volumes/favorites_redis:/data
   rabbitmq:
     image: rabbitmq:3-management
     restart: always

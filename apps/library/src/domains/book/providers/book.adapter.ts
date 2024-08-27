@@ -39,19 +39,24 @@ export class BookAdapter implements BookRepository {
     orderDirection,
     orderBy,
     authors = [],
+    books = [],
   }: IBookQuery): Promise<[BookAggregate[], number]> {
     const regex = new RegExp(search, 'i');
     const sortOrder = orderDirection === 'desc' ? -1 : 1;
 
     const whereOptions: FilterQuery<IBookDocument> = {
-      $or: [{ title: regex }, { description: regex }],
+      title: regex,
     };
 
     if (authors.length > 0) {
       whereOptions.author = { $in: authors };
     }
 
-    const books = await this.bookModel
+    if (books.length > 0) {
+      whereOptions._id = { $in: books };
+    }
+
+    const result = await this.bookModel
       .find(
         whereOptions,
         {},
@@ -65,7 +70,7 @@ export class BookAdapter implements BookRepository {
       .exec();
 
     const count = await this.bookModel.countDocuments(whereOptions).exec();
-    return [books.map(book => this.toAggregate(book)), count];
+    return [result.map(book => this.toAggregate(book)), count];
   }
 
   public async findById(id: string): Promise<BookAggregate | null> {

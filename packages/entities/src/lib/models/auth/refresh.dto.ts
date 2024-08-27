@@ -1,6 +1,7 @@
-import { IsNotEmpty, IsString } from 'class-validator';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { filterFields } from '@bookstore-nx/microservices';
+import { IsNotEmpty, IsString } from 'class-validator';
+
+import { filterFields } from '../../helpers/filter-fields';
 
 @ObjectType()
 export class RefreshDto {

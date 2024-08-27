@@ -1,0 +1,3 @@
+mutation DeleteFavorite($favorite: DeleteFavoriteDto!) {
+  deleteFavorite(favorite: $favorite)
+}

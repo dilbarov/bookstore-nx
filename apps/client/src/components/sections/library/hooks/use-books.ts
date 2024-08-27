@@ -1,13 +1,13 @@
 import React from 'react';
-import { AuthorModel, BookModel, useGetBooksQuery } from '../../../../graphql/graphql';
+import { AuthorModel, BookResponse, FavoriteBookCategory, useGetBooksQuery } from '../../../../graphql/graphql';
 
 export interface Filters {
   authors?: Array<Pick<AuthorModel, 'id' | 'name'>>;
+  categories?: FavoriteBookCategory[];
 }
 
 export const useBooks = (query: Filters = {}) => {
   const [search, setSearch] = React.useState('');
-
   const [pendingSearch, setPendingSearch] = React.useState('');
   const [isFirstQuery, setIsFirstQuery] = React.useState(true);
   const { loading, data } = useGetBooksQuery({
@@ -15,12 +15,13 @@ export const useBooks = (query: Filters = {}) => {
       query: {
         search: pendingSearch,
         authors: query.authors?.map(item => item.id),
+        categories: query.categories,
         orderBy: 'title',
         orderDirection: 'DESC',
       },
     },
   });
-  const [items, setItems] = React.useState<BookModel[]>([]);
+  const [items, setItems] = React.useState<BookResponse[]>([]);
   const searchTimeout = React.useRef<number | undefined>(undefined);
 
   React.useEffect(() => {
@@ -31,7 +32,7 @@ export const useBooks = (query: Filters = {}) => {
 
   React.useEffect(() => {
     if (data?.getBooks?.items) {
-      setItems(data.getBooks.items as BookModel[]);
+      setItems(data.getBooks.items as BookResponse[]);
     }
   }, [data?.getBooks?.items]);
 

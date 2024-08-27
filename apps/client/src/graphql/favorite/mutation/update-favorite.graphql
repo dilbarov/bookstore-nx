@@ -1,0 +1,7 @@
+mutation UpdateFavorite($favorite: UpdateFavoriteDto!) {
+  updateFavorite(favorite: $favorite) {
+    entityId
+    category
+    entityType
+  }
+}

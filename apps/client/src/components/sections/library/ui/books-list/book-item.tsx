@@ -1,17 +1,31 @@
 import React from 'react';
-import { AspectRatio, Button, Card, CardContent, IconButton, Skeleton, Stack, Typography } from '@mui/joy';
-import { BookmarkAdd } from '@mui/icons-material';
+import { AspectRatio, Button, Card, CardContent, Skeleton, Stack, Typography } from '@mui/joy';
+import { FavoriteBookCategory } from '../../../../../graphql/graphql';
+import { FavoriteCategoryButton } from '../favorite-category-button/favorite-category-button';
 
 interface Props {
   title?: string;
   author?: string;
   url?: string;
-  onAddToFavorites?: () => void;
+  favoriteCategory?: FavoriteBookCategory | null;
+  onAddToFavorites?: (category: FavoriteBookCategory) => void;
+  onChangeFavoriteCategory?: (category: FavoriteBookCategory) => void;
+  onRemoveFromFavorites?: () => void;
   onExplore?: () => void;
   loading?: boolean;
 }
 
-export const BookItem: React.FC<Props> = ({ title, author, url, loading, onExplore, onAddToFavorites }) => {
+export const BookItem: React.FC<Props> = ({
+  title,
+  author,
+  url,
+  favoriteCategory,
+  loading,
+  onExplore,
+  onAddToFavorites,
+  onChangeFavoriteCategory,
+  onRemoveFromFavorites,
+}) => {
   return (
     <Card variant="soft" sx={{ width: '100%' }}>
       <div>
@@ -20,10 +34,13 @@ export const BookItem: React.FC<Props> = ({ title, author, url, loading, onExplo
             <Skeleton loading={loading}>{title}</Skeleton>
           </Typography>
 
-          <IconButton variant={'plain'} color={'neutral'} size={'sm'} onClick={onAddToFavorites}>
-            <BookmarkAdd />
-            <Skeleton loading={loading} />
-          </IconButton>
+          <FavoriteCategoryButton
+            favoriteCategory={favoriteCategory}
+            loading={loading}
+            onChangeFavoriteCategory={onChangeFavoriteCategory}
+            onAddToFavorites={onAddToFavorites}
+            onRemoveFromFavorites={onRemoveFromFavorites}
+          />
         </Stack>
         <Typography level="body-sm">
           <Skeleton loading={loading}>{author}</Skeleton>

@@ -1,14 +1,19 @@
-import { AuthGuard } from '@nestjs/passport';
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
-import { GqlExecutionContext } from '@nestjs/graphql';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '@nestjs/passport';
+import { Observable } from 'rxjs';
+
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  public constructor(private _reflectorJwtAuthGuard: Reflector) {
+  public constructor(
+    private _reflectorJwtAuthGuard: Reflector,
+    private readonly _jwtService: JwtService,
+  ) {
     super();
   }
 
@@ -20,6 +25,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       context.getHandler(),
       context.getClass(),
     ]);
+
+    const authHeader = req.headers.authorization;
+
+    if (authHeader) {
+      const token = authHeader.split(' ')[1];
+      const user = token ? this._jwtService.decode(token) : null;
+      req.user = user?.sub && user?.email ? { id: user.sub, email: user.email } : null;
+    }
 
     if (isPublic) {
       return true;

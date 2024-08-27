@@ -1,7 +1,6 @@
 import React from 'react';
 import { Drawer, ModalClose, Sheet } from '@mui/joy';
 import { DrawerTypeMap } from '@mui/joy/Drawer/DrawerProps';
-import { useScreen } from '../../../hooks/use-screen';
 
 interface Props {
   opened?: boolean;

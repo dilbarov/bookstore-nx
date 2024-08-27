@@ -1,5 +1,6 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
 import { UserModel } from '@bookstore-nx/entities';
+import { Args, Query, Resolver } from '@nestjs/graphql';
+
 import { CurrentUserId } from '../../../shared/decorators/current-user-id.decorator';
 import { UserService } from '../services/user.service';
 

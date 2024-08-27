@@ -42,6 +42,8 @@ const refreshTokens = async (refreshToken: string, fingerprint: string): Promise
   return result;
 };
 
+let refreshTokenPromise: Promise<void> | null = null;
+
 const generateRefreshTokenLinkOnUnauthError = () => {
   return [
     onError(({ graphQLErrors, operation, forward }) => {
@@ -68,8 +70,21 @@ const generateRefreshTokenLinkOnUnauthError = () => {
     setContext(async (_, previousContext) => {
       const refreshToken = localStorage.getItem('refreshToken');
       if (previousContext?.headers?._needsRefresh && refreshToken) {
-        const fingerprint = await getVisitorId();
-        await refreshTokens(refreshToken, fingerprint);
+        if (!refreshTokenPromise) {
+          refreshTokenPromise = (async () => {
+            try {
+              const fingerprint = await getVisitorId();
+              await refreshTokens(refreshToken, fingerprint);
+            } catch (error) {
+              console.error('Failed to refresh token:', error);
+            } finally {
+              refreshTokenPromise = null;
+            }
+          })();
+        }
+
+        await refreshTokenPromise;
+        // await refreshTokens(refreshToken, fingerprint);
       }
 
       return previousContext;

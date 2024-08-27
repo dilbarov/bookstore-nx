@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { AuthorModel, AuthorQueryInput, AuthorsResponse, CreateAuthorDto } from '@bookstore-nx/entities';
 import {
   AmqpService,
   CreateAuthorContract,
   GetAuthorByIdContract,
   GetAuthorsContract,
 } from '@bookstore-nx/microservices';
-import { AuthorModel, AuthorQueryInput, AuthorsResponse, CreateAuthorDto } from '@bookstore-nx/entities';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthorService {

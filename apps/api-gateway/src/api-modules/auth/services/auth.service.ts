@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { TokensDto } from '@bookstore-nx/entities';
 import {
   AmqpService,
   LoginContract,
@@ -6,7 +6,7 @@ import {
   RefreshTokensContract,
   RegisterContract,
 } from '@bookstore-nx/microservices';
-import { TokensDto } from '@bookstore-nx/entities';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {

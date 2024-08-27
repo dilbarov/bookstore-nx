@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsString, IsUrl, IsUUID } from 'class-validator';
-import { filterFields } from '@bookstore-nx/microservices';
+import { filterFields } from '../../helpers/filter-fields';
 
 @InputType()
 export class CreateBookDto {

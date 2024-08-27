@@ -1,4 +1,5 @@
 import { Any } from '@bookstore-nx/common';
+import { QUEUE_IDENTITY_OPTIONS } from '@bookstore-nx/microservices';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -6,7 +7,6 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { DataSource } from 'typeorm';
 
 import { AppModule } from './app/app.module';
-import { QUEUE_IDENTITY_OPTIONS } from '@bookstore-nx/microservices';
 
 declare const module: Any;
 

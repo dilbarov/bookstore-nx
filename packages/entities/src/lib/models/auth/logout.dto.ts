@@ -1,7 +1,7 @@
-import { filterFields } from '@bookstore-nx/microservices';
 import { Field, ObjectType, PickType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString } from 'class-validator';
 
+import { filterFields } from '../../helpers/filter-fields';
 import { UserModel } from '../user';
 
 @ObjectType()

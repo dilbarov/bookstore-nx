@@ -36,6 +36,8 @@ type BookModel {
 
 input BookQueryInput {
   authors: [String!]
+  categories: [String!]
+  isFavorite: Boolean
   orderBy: String
   orderDirection: String
   search: String
@@ -43,9 +45,22 @@ input BookQueryInput {
   take: Int
 }
 
+type BookResponse {
+  author: AuthorModel!
+  createdAt: String!
+  description: String!
+  favoriteCategory: FavoriteBookCategory
+  id: ID!
+  language: String!
+  rating: Float!
+  title: String!
+  updatedAt: String!
+  url: String!
+}
+
 type BooksResponse {
   count: Int!
-  items: [BookModel!]!
+  items: [BookResponse!]!
 }
 
 input CreateAuthorDto {
@@ -60,20 +75,50 @@ input CreateBookDto {
   url: String!
 }
 
+input CreateFavoriteDto {
+  category: String!
+  entityId: String!
+  entityType: String!
+  userId: String!
+}
+
+input DeleteFavoriteDto {
+  entityId: String!
+  userId: String!
+}
+
+"""The category of favorite items"""
+enum FavoriteBookCategory {
+  DidNotFinish
+  Read
+  ReadingNow
+  WantToRead
+}
+
+type FavoriteModel {
+  category: String!
+  entityId: String!
+  entityType: String!
+  userId: String!
+}
+
 type Mutation {
   createAuthor(author: CreateAuthorDto!): AuthorModel!
   createBook(book: CreateBookDto!): BookModel!
+  createFavorite(favorite: CreateFavoriteDto!): FavoriteModel!
+  deleteFavorite(favorite: DeleteFavoriteDto!): Boolean!
   login(email: String!, fingerprint: String!, password: String!): TokensDto!
   logout(fingerprint: String!): Boolean!
   refreshTokens(fingerprint: String!, refreshToken: String!): TokensDto!
   register(email: String!, fingerprint: String!, password: String!): TokensDto!
   updateBook(book: UpdateBookDto!): BookModel!
+  updateFavorite(favorite: UpdateFavoriteDto!): FavoriteModel!
 }
 
 type Query {
   getAuthorById(id: String!): AuthorModel!
   getAuthors(query: AuthorQueryInput!): AuthorsResponse!
-  getBookById(id: String!): BookModel!
+  getBookById(id: String!): BookResponse!
   getBooks(query: BookQueryInput!): BooksResponse!
   getCurrentUser: UserModel!
   getUserByEmail(email: String!): UserModel!
@@ -92,6 +137,12 @@ input UpdateBookDto {
   language: String!
   title: String!
   url: String!
+}
+
+input UpdateFavoriteDto {
+  category: String!
+  entityId: String!
+  userId: String!
 }
 
 type UserModel {

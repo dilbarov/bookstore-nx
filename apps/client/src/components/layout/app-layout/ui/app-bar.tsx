@@ -3,17 +3,18 @@ import { MainContainer } from '../../../wrappers/main-container';
 import React from 'react';
 import { Logo } from '../../../shared/logo/logo';
 import { useCurrentUser } from '../../../../hooks/use-current-user';
-import BookmarkOutlinedIcon from '@mui/icons-material/BookmarkOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { useNavigate } from 'react-router-dom';
 import { RoutePaths } from '../../../../router/routes-paths';
 
 export const AppBar = () => {
-  const { user, canManageFavorites, logout } = useCurrentUser();
+  const { user, logout } = useCurrentUser();
+
   const navigate = useNavigate();
+
   const redirectToLogin = React.useCallback(() => {
     navigate(RoutePaths.login);
-  }, []);
+  }, [navigate]);
 
   return (
     <Stack alignItems={'center'} sx={{ bgcolor: 'white', position: 'sticky', top: 0, zIndex: 1000 }}>
@@ -25,11 +26,6 @@ export const AppBar = () => {
               <Button variant={'solid'} onClick={redirectToLogin}>
                 Log In
               </Button>
-            )}
-            {canManageFavorites && (
-              <IconButton>
-                <BookmarkOutlinedIcon />
-              </IconButton>
             )}
             {user && (
               <Dropdown>

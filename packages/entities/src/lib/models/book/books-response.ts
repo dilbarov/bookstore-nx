@@ -1,11 +1,11 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-import { BookModel } from './book.model';
+import { BookResponse } from './book-response';
 
 @ObjectType()
 export class BooksResponse {
-  @Field(() => [BookModel])
-  items: BookModel[];
+  @Field(() => [BookResponse])
+  items: BookResponse[];
 
   @Field(() => Int)
   count: number;

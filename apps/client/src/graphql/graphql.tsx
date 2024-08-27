@@ -54,6 +54,8 @@ export type BookModel = {
 
 export type BookQueryInput = {
   authors?: InputMaybe<Array<Scalars['String']['input']>>;
+  categories?: InputMaybe<Array<Scalars['String']['input']>>;
+  isFavorite?: InputMaybe<Scalars['Boolean']['input']>;
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<Scalars['String']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
@@ -61,10 +63,24 @@ export type BookQueryInput = {
   take?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export type BookResponse = {
+  __typename?: 'BookResponse';
+  author: AuthorModel;
+  createdAt: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  favoriteCategory?: Maybe<FavoriteBookCategory>;
+  id: Scalars['ID']['output'];
+  language: Scalars['String']['output'];
+  rating: Scalars['Float']['output'];
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
 export type BooksResponse = {
   __typename?: 'BooksResponse';
   count: Scalars['Int']['output'];
-  items: Array<BookModel>;
+  items: Array<BookResponse>;
 };
 
 export type CreateAuthorDto = {
@@ -79,15 +95,46 @@ export type CreateBookDto = {
   url: Scalars['String']['input'];
 };
 
+export type CreateFavoriteDto = {
+  category: Scalars['String']['input'];
+  entityId: Scalars['String']['input'];
+  entityType: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+export type DeleteFavoriteDto = {
+  entityId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+/** The category of favorite items */
+export enum FavoriteBookCategory {
+  DidNotFinish = 'DidNotFinish',
+  Read = 'Read',
+  ReadingNow = 'ReadingNow',
+  WantToRead = 'WantToRead'
+}
+
+export type FavoriteModel = {
+  __typename?: 'FavoriteModel';
+  category: Scalars['String']['output'];
+  entityId: Scalars['String']['output'];
+  entityType: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createAuthor: AuthorModel;
   createBook: BookModel;
+  createFavorite: FavoriteModel;
+  deleteFavorite: Scalars['Boolean']['output'];
   login: TokensDto;
   logout: Scalars['Boolean']['output'];
   refreshTokens: TokensDto;
   register: TokensDto;
   updateBook: BookModel;
+  updateFavorite: FavoriteModel;
 };
 
 
@@ -98,6 +145,16 @@ export type MutationCreateAuthorArgs = {
 
 export type MutationCreateBookArgs = {
   book: CreateBookDto;
+};
+
+
+export type MutationCreateFavoriteArgs = {
+  favorite: CreateFavoriteDto;
+};
+
+
+export type MutationDeleteFavoriteArgs = {
+  favorite: DeleteFavoriteDto;
 };
 
 
@@ -130,11 +187,16 @@ export type MutationUpdateBookArgs = {
   book: UpdateBookDto;
 };
 
+
+export type MutationUpdateFavoriteArgs = {
+  favorite: UpdateFavoriteDto;
+};
+
 export type Query = {
   __typename?: 'Query';
   getAuthorById: AuthorModel;
   getAuthors: AuthorsResponse;
-  getBookById: BookModel;
+  getBookById: BookResponse;
   getBooks: BooksResponse;
   getCurrentUser: UserModel;
   getUserByEmail: UserModel;
@@ -184,6 +246,12 @@ export type UpdateBookDto = {
   language: Scalars['String']['input'];
   title: Scalars['String']['input'];
   url: Scalars['String']['input'];
+};
+
+export type UpdateFavoriteDto = {
+  category: Scalars['String']['input'];
+  entityId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
 };
 
 export type UserModel = {
@@ -247,14 +315,35 @@ export type GetBookByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetBookByIdQuery = { __typename?: 'Query', getBookById: { __typename?: 'BookModel', id: string, title: string, description: string, language: string, rating: number, url: string, author: { __typename?: 'AuthorModel', id: string, name: string } } };
+export type GetBookByIdQuery = { __typename?: 'Query', getBookById: { __typename?: 'BookResponse', id: string, title: string, description: string, language: string, rating: number, url: string, favoriteCategory?: FavoriteBookCategory | null, author: { __typename?: 'AuthorModel', id: string, name: string } } };
 
 export type GetBooksQueryVariables = Exact<{
   query: BookQueryInput;
 }>;
 
 
-export type GetBooksQuery = { __typename?: 'Query', getBooks: { __typename?: 'BooksResponse', count: number, items: Array<{ __typename?: 'BookModel', id: string, title: string, language: string, rating: number, url: string, author: { __typename?: 'AuthorModel', id: string, name: string } }> } };
+export type GetBooksQuery = { __typename?: 'Query', getBooks: { __typename?: 'BooksResponse', count: number, items: Array<{ __typename?: 'BookResponse', id: string, title: string, language: string, rating: number, url: string, favoriteCategory?: FavoriteBookCategory | null, author: { __typename?: 'AuthorModel', id: string, name: string } }> } };
+
+export type CreateFavoriteMutationVariables = Exact<{
+  favorite: CreateFavoriteDto;
+}>;
+
+
+export type CreateFavoriteMutation = { __typename?: 'Mutation', createFavorite: { __typename?: 'FavoriteModel', entityId: string, category: string, entityType: string } };
+
+export type DeleteFavoriteMutationVariables = Exact<{
+  favorite: DeleteFavoriteDto;
+}>;
+
+
+export type DeleteFavoriteMutation = { __typename?: 'Mutation', deleteFavorite: boolean };
+
+export type UpdateFavoriteMutationVariables = Exact<{
+  favorite: UpdateFavoriteDto;
+}>;
+
+
+export type UpdateFavoriteMutation = { __typename?: 'Mutation', updateFavorite: { __typename?: 'FavoriteModel', entityId: string, category: string, entityType: string } };
 
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -494,6 +583,7 @@ export const GetBookByIdDocument = gql`
     language
     rating
     url
+    favoriteCategory
     author {
       id
       name
@@ -543,6 +633,7 @@ export const GetBooksDocument = gql`
       language
       rating
       url
+      favoriteCategory
       author {
         id
         name
@@ -585,6 +676,107 @@ export type GetBooksQueryHookResult = ReturnType<typeof useGetBooksQuery>;
 export type GetBooksLazyQueryHookResult = ReturnType<typeof useGetBooksLazyQuery>;
 export type GetBooksSuspenseQueryHookResult = ReturnType<typeof useGetBooksSuspenseQuery>;
 export type GetBooksQueryResult = Apollo.QueryResult<GetBooksQuery, GetBooksQueryVariables>;
+export const CreateFavoriteDocument = gql`
+    mutation CreateFavorite($favorite: CreateFavoriteDto!) {
+  createFavorite(favorite: $favorite) {
+    entityId
+    category
+    entityType
+  }
+}
+    `;
+export type CreateFavoriteMutationFn = Apollo.MutationFunction<CreateFavoriteMutation, CreateFavoriteMutationVariables>;
+
+/**
+ * __useCreateFavoriteMutation__
+ *
+ * To run a mutation, you first call `useCreateFavoriteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFavoriteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFavoriteMutation, { data, loading, error }] = useCreateFavoriteMutation({
+ *   variables: {
+ *      favorite: // value for 'favorite'
+ *   },
+ * });
+ */
+export function useCreateFavoriteMutation(baseOptions?: Apollo.MutationHookOptions<CreateFavoriteMutation, CreateFavoriteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateFavoriteMutation, CreateFavoriteMutationVariables>(CreateFavoriteDocument, options);
+      }
+export type CreateFavoriteMutationHookResult = ReturnType<typeof useCreateFavoriteMutation>;
+export type CreateFavoriteMutationResult = Apollo.MutationResult<CreateFavoriteMutation>;
+export type CreateFavoriteMutationOptions = Apollo.BaseMutationOptions<CreateFavoriteMutation, CreateFavoriteMutationVariables>;
+export const DeleteFavoriteDocument = gql`
+    mutation DeleteFavorite($favorite: DeleteFavoriteDto!) {
+  deleteFavorite(favorite: $favorite)
+}
+    `;
+export type DeleteFavoriteMutationFn = Apollo.MutationFunction<DeleteFavoriteMutation, DeleteFavoriteMutationVariables>;
+
+/**
+ * __useDeleteFavoriteMutation__
+ *
+ * To run a mutation, you first call `useDeleteFavoriteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFavoriteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFavoriteMutation, { data, loading, error }] = useDeleteFavoriteMutation({
+ *   variables: {
+ *      favorite: // value for 'favorite'
+ *   },
+ * });
+ */
+export function useDeleteFavoriteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFavoriteMutation, DeleteFavoriteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteFavoriteMutation, DeleteFavoriteMutationVariables>(DeleteFavoriteDocument, options);
+      }
+export type DeleteFavoriteMutationHookResult = ReturnType<typeof useDeleteFavoriteMutation>;
+export type DeleteFavoriteMutationResult = Apollo.MutationResult<DeleteFavoriteMutation>;
+export type DeleteFavoriteMutationOptions = Apollo.BaseMutationOptions<DeleteFavoriteMutation, DeleteFavoriteMutationVariables>;
+export const UpdateFavoriteDocument = gql`
+    mutation UpdateFavorite($favorite: UpdateFavoriteDto!) {
+  updateFavorite(favorite: $favorite) {
+    entityId
+    category
+    entityType
+  }
+}
+    `;
+export type UpdateFavoriteMutationFn = Apollo.MutationFunction<UpdateFavoriteMutation, UpdateFavoriteMutationVariables>;
+
+/**
+ * __useUpdateFavoriteMutation__
+ *
+ * To run a mutation, you first call `useUpdateFavoriteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFavoriteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFavoriteMutation, { data, loading, error }] = useUpdateFavoriteMutation({
+ *   variables: {
+ *      favorite: // value for 'favorite'
+ *   },
+ * });
+ */
+export function useUpdateFavoriteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFavoriteMutation, UpdateFavoriteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateFavoriteMutation, UpdateFavoriteMutationVariables>(UpdateFavoriteDocument, options);
+      }
+export type UpdateFavoriteMutationHookResult = ReturnType<typeof useUpdateFavoriteMutation>;
+export type UpdateFavoriteMutationResult = Apollo.MutationResult<UpdateFavoriteMutation>;
+export type UpdateFavoriteMutationOptions = Apollo.BaseMutationOptions<UpdateFavoriteMutation, UpdateFavoriteMutationVariables>;
 export const GetCurrentUserDocument = gql`
     query GetCurrentUser {
   getCurrentUser {

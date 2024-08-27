@@ -1,6 +1,6 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional, IsString } from 'class-validator';
-import { filterFields } from '@bookstore-nx/microservices';
+import { filterFields } from '../../helpers/filter-fields';
 import { IAuthor, IAuthorQuery } from '../../interfaces';
 
 @InputType()
