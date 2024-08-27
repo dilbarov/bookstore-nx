@@ -50,6 +50,7 @@ export class AuthResolver {
     return result;
   }
 
+  @Public()
   @Mutation(() => TokensDto)
   public async refreshTokens(
     @Args('refreshToken') refreshToken: string,

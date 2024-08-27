@@ -4,12 +4,12 @@ import { router } from '../router/router';
 import { SnackbarProvider } from 'notistack';
 import { APP_NAME } from '../globals/contants';
 import { Helmet } from 'react-helmet';
-import { graphQLCLient } from '../graphql/client';
 import React from 'react';
 import { ApolloProvider } from '@apollo/client';
+import { graphQLClient } from '../graphql/client';
 
 export const App = () => (
-  <ApolloProvider client={graphQLCLient}>
+  <ApolloProvider client={graphQLClient}>
     <ThemeContext>
       <Helmet title={APP_NAME} />
       <SnackbarProvider maxSnack={5}>

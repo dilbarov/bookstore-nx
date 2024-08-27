@@ -10,6 +10,6 @@ export class GenerateAccessTokenCommandHandler implements ICommandHandler<Genera
   public async execute(command: GenerateAccessTokenCommand): Promise<string> {
     const { userId, email } = command;
     const payload = { sub: userId, email };
-    return await this.jwtService.signAsync(payload, { expiresIn: '15m' });
+    return await this.jwtService.signAsync(payload, { expiresIn: '1m' });
   }
 }

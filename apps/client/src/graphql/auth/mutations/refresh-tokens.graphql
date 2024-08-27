@@ -1,0 +1,6 @@
+mutation RefreshTokens($refreshToken: String!, $fingerprint: String!) {
+  refreshTokens(refreshToken: $refreshToken, fingerprint: $fingerprint ) {
+    accessToken
+    refreshToken
+  }
+}

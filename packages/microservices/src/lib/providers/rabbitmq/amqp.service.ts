@@ -24,8 +24,8 @@ export class AmqpService {
     if (result.error) {
       throw new GraphQLError(result.error.message, {
         extensions: {
-          code: result.error.code,
-          message: result.error.message,
+          code: result.error.message,
+          message: result.error.code,
           statusCode: result.error.statusCode,
         },
       });

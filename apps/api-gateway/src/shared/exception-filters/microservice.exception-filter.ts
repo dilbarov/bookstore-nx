@@ -8,13 +8,13 @@ export class MicroserviceExceptionFilter implements GqlExceptionFilter {
   public catch(exception: MicroserviceBaseError, host: ArgumentsHost): void {
     const gqlHost = GqlArgumentsHost.create(host);
     const response = gqlHost.getContext().res as Response;
-    const status = exception.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
+    const statusCode = exception.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
     const errorResponse = {
-      statusCode: status,
+      statusCode,
       message: exception.message,
       error: exception.code,
     };
 
-    response.status(status).json(errorResponse);
+    response.status(statusCode).json(errorResponse);
   }
 }

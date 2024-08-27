@@ -1,0 +1,6 @@
+mutation Login($email: String!, $fingerprint: String!, $password: String!) {
+  login(email: $email, fingerprint: $fingerprint, password: $password) {
+    accessToken
+    refreshToken
+  }
+}

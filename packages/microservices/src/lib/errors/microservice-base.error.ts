@@ -3,7 +3,7 @@ export class MicroserviceBaseError extends Error {
   public readonly statusCode: number;
 
   public constructor(message: string, code: string, statusCode: number) {
-    super(code);
+    super();
     this.code = code;
     this.message = message;
     this.statusCode = statusCode;

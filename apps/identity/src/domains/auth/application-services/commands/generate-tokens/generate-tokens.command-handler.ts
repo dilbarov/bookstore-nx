@@ -20,7 +20,7 @@ export class GenerateTokensCommandHandler implements ICommandHandler<GenerateTok
     const accessToken = await this.commandBus.execute(new GenerateAccessTokenCommand(user.id, user.email));
     const refreshToken = await this.commandBus.execute(new GenerateRefreshTokenCommand(user.id));
 
-    const accessTokenTTL = 900; // 15 minutes in seconds
+    const accessTokenTTL = 60; // 1 min in seconds
     const refreshTokenTTL = 604800; // 7 days in seconds
 
     await this.tokenRepository.saveAccessToken(user.id, accessToken, fingerprint, accessTokenTTL);

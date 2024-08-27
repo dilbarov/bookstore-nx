@@ -1,5 +1,5 @@
 import { TokensDto } from '@bookstore-nx/entities';
-import { BadRequestError } from '@bookstore-nx/microservices';
+import { BadRequestError, MicroserviceBaseError } from '@bookstore-nx/microservices';
 import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { UserAggregate } from '../../../../user/domain/user.aggregate';
@@ -20,7 +20,7 @@ export class RegisterCommandHandler implements ICommandHandler<RegisterCommand, 
 
     const existingUser = await this.userRepository.findByEmail(email);
     if (existingUser) {
-      throw new BadRequestError(`User with email ${email} already exists.`);
+      throw new MicroserviceBaseError(`User with email ${email} already exists.`, 'EMAIL_EXISTS', 400);
     }
 
     const userAggregate = UserAggregate.create({ email });

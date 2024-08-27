@@ -19,10 +19,11 @@ export class RefreshTokensCommandHandler implements ICommandHandler<RefreshToken
 
   public async execute({ payload: { refreshToken, fingerprint } }: RefreshTokensCommand): Promise<TokensDto> {
     const decoded = await this.jwtService.verifyAsync<Pick<IToken, 'sub'>>(refreshToken);
+
     const user = await this.userRepository.findById(decoded.sub);
 
     if (!user) {
-      throw new BadRequestError('Invalid refresh token');
+      throw new BadRequestError('User not found');
     }
 
     const existingAccessToken = await this.tokenRepository.getAccessToken(user.id, fingerprint);

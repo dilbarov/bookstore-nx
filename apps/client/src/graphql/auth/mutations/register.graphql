@@ -1,0 +1,6 @@
+mutation Register($email: String!, $fingerprint: String!, $password: String!) {
+  register(email: $email, fingerprint: $fingerprint, password: $password) {
+    accessToken
+    refreshToken
+  }
+}

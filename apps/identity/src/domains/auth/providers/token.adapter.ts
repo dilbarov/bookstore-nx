@@ -12,11 +12,11 @@ export class TokenAdapter implements TokenRepository {
     await this.redis.del(key);
   }
 
-  private get(key: string): Promise<string | null> {
-    return this.redis.get(key);
+  private async get(key: string): Promise<string | null> {
+    return await this.redis.get(key);
   }
 
-  private set(key: string, value: string, expireTime: number): Promise<void> {
+  private async set(key: string, value: string, expireTime: number): Promise<void> {
     return void Promise.resolve(this.redis.set(key, value, 'EX', expireTime));
   }
 
