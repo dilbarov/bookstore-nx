@@ -1,82 +1,98 @@
-# BookstoreNx
+# Project Setup
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+This project consists of multiple microservices, each serving a specific purpose within the system. The services include `api-gateway`, `client`, `identity`, `favorites`, and `library`. Below are the instructions for setting up and running the entire system.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Prerequisites
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+Before running the project, ensure that you have the following installed:
 
-## Finish your CI setup
+- [Docker](https://www.docker.com/get-started)
+- [Node.js](https://nodejs.org/)
+- [NX CLI](https://nx.dev/getting-started/intro)
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/QulpP9FjDx)
+## Recommended Development Environment
+
+For an optimal development experience, it's recommended to use the NX Console extension. NX Console provides an intuitive graphical interface for running NX commands, managing your workspace, and generating code.
+
+### NX Console for Visual Studio Code
+
+If you're using Visual Studio Code, you can install the NX Console extension from the Visual Studio Marketplace:
+
+- [Download NX Console for VS Code](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console)
+
+### NX Console for JetBrains IDEs
+
+For JetBrains IDEs like WebStorm, IntelliJ IDEA, and others, you can also install the NX Console plugin:
+
+- [Download NX Console for JetBrains](https://plugins.jetbrains.com/plugin/18093-nx-console)
+
+These tools provide a powerful way to interact with your NX workspace without having to remember complex commands.
 
 
-## Run tasks
+## Running the Databases with Docker Compose
 
-To run the dev server for your app, use:
+To start the required databases for the microservices, use the following command to run `docker-compose`:
 
-```sh
-npx nx serve api-gateway
+```bash
+docker-compose up
 ```
 
-To create a production bundle:
+This command will start all the necessary databases, such as PostgreSQL, Redis, and MongoDB, as defined in the docker-compose.yml file.
 
-```sh
-npx nx build api-gateway
+## Running the Applications
+
+Once the databases are up and running, you can start each microservice individually using the following commands:
+
+### 1. API Gateway
+
+Start the API Gateway, which serves as the central point of entry to the system:
+
+```bash
+nx run api-gateway:serve:development
 ```
 
-To see all available targets to run for a project, run:
+### 2. Identity Service
 
-```sh
-npx nx show project api-gateway
-```
-        
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+Start the Identity Service, which manages user authentication and authorization:
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/node:app demo
+```bash
+nx run identity:serve:development
 ```
 
-To generate a new library, use:
+### 3. Favorites Service
 
-```sh
-npx nx g @nx/node:lib mylib
+Start the Favorites Service, which handles user favorites across different entities:
+
+```bash
+nx run favorites:serve:development
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+### 4. Library Service
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Start the Library Service, which manages books and authors:
 
+```bash
+nx run library:serve:development
+```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 5. Client
 
-## Install Nx Console
+Start the frontend client application:
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+```bash
+nx run client:serve
+```
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Summary of Commands
 
-## Useful links
+1. Start Databases: `docker-compose up`
+2. Start API Gateway: `nx run api-gateway:serve:development`
+3. Start Identity Service: `nx run identity:serve:development`
+4. Start Favorites Service: `nx run favorites:serve:development`
+5. Start Library Service: `nx run library:serve:development`
+6. Start Client: `nx run client:serve`
 
-Learn more:
+## Additional Information
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Ensure that the databases are fully initialized before starting the microservices to avoid connection errors.
+- You can use docker-compose down to stop the databases when they are no longer needed.
