@@ -1,9 +1,10 @@
 import { validateSync } from 'class-validator';
+import { Any } from '@bookstore-nx/common';
 
-export const validateAggregationModel = (model: any) => {
-  const errors = validateSync(model)
+export const validateAggregationModel = (model: Any) => {
+  const errors = validateSync(model);
 
   if (errors.length > 0) {
-    throw new Error(`Page not valid\n ${errors.join('\n')}`)
+    throw new Error(`Model not valid\n ${errors.join('\n')}`);
   }
-}
+};
